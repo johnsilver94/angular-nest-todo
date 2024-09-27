@@ -8,6 +8,9 @@ dependencies:
   '@angular/animations':
     specifier: ~18.2.0
     version: 18.2.0(@angular/core@18.2.0)
+  '@angular/cdk':
+    specifier: ^18.2.6
+    version: 18.2.6(@angular/common@18.2.0)(@angular/core@18.2.0)(rxjs@7.8.0)
   '@angular/common':
     specifier: ~18.2.0
     version: 18.2.0(@angular/core@18.2.0)(rxjs@7.8.0)
@@ -20,6 +23,9 @@ dependencies:
   '@angular/forms':
     specifier: ~18.2.0
     version: 18.2.0(@angular/common@18.2.0)(@angular/core@18.2.0)(@angular/platform-browser@18.2.0)(rxjs@7.8.0)
+  '@angular/material':
+    specifier: ^18.2.6
+    version: 18.2.6(@angular/animations@18.2.0)(@angular/cdk@18.2.6)(@angular/common@18.2.0)(@angular/core@18.2.0)(@angular/forms@18.2.0)(@angular/platform-browser@18.2.0)(rxjs@7.8.0)
   '@angular/platform-browser':
     specifier: ~18.2.0
     version: 18.2.0(@angular/animations@18.2.0)(@angular/common@18.2.0)(@angular/core@18.2.0)
@@ -76,12 +82,6 @@ devDependencies:
   '@eslint/js':
     specifier: ^9.8.0
     version: 9.8.0
-  '@html-eslint/eslint-plugin':
-    specifier: ^0.27.0
-    version: 0.27.0
-  '@html-eslint/parser':
-    specifier: ^0.27.0
-    version: 0.27.0
   '@nestjs/schematics':
     specifier: ^10.0.1
     version: 10.0.1(typescript@5.5.2)
@@ -619,6 +619,21 @@ packages:
       - supports-color
       - terser
 
+  /@angular/cdk@18.2.6(@angular/common@18.2.0)(@angular/core@18.2.0)(rxjs@7.8.0):
+    resolution: {integrity: sha512-Gfq/iv4zhlKYpdQkDaBRwxI71NHNUHM1Cs1XhnZ0/oFct5HXvSv1RHRGTKqBJLLACaAPzZKXJ/UglLoyO5CNiQ==}
+    peerDependencies:
+      '@angular/common': ^18.0.0 || ^19.0.0
+      '@angular/core': ^18.0.0 || ^19.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    dependencies:
+      '@angular/common': 18.2.0(@angular/core@18.2.0)(rxjs@7.8.0)
+      '@angular/core': 18.2.0(rxjs@7.8.0)(zone.js@0.14.3)
+      rxjs: 7.8.0
+      tslib: 2.7.0
+    optionalDependencies:
+      parse5: 7.1.2
+    dev: false
+
   /@angular/cli@18.2.0:
     resolution: {integrity: sha512-hA60QIA7Dh8LQxM42wqd7WrhwQjbjB8oIRH5Slgbiv8iocAo76scp1/qyZo2SSzjfkB7jxUiao5L4ckiJ/hvZg==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
@@ -722,6 +737,27 @@ packages:
     resolution: {integrity: sha512-brl5061YqfNnT7yZNMWmsgv6ve6p9+kfhX6mZWOGICcY2SYVtCNVHdqzwWTTwY7MvTVfycHxiAf9PEmc5lD4/g==}
     engines: {node: ^18.19.1 || ^20.11.1 || >=22.0.0}
     dev: true
+
+  /@angular/material@18.2.6(@angular/animations@18.2.0)(@angular/cdk@18.2.6)(@angular/common@18.2.0)(@angular/core@18.2.0)(@angular/forms@18.2.0)(@angular/platform-browser@18.2.0)(rxjs@7.8.0):
+    resolution: {integrity: sha512-ObxC/vomSb9QF3vIztuiInQzws+D6u09Dhfx6uNFjtyICqxEFpF7+Qx7QVDWrsuXOgxZTKgacK8f46iV8hWUfg==}
+    peerDependencies:
+      '@angular/animations': ^18.0.0 || ^19.0.0
+      '@angular/cdk': 18.2.6
+      '@angular/common': ^18.0.0 || ^19.0.0
+      '@angular/core': ^18.0.0 || ^19.0.0
+      '@angular/forms': ^18.0.0 || ^19.0.0
+      '@angular/platform-browser': ^18.0.0 || ^19.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    dependencies:
+      '@angular/animations': 18.2.0(@angular/core@18.2.0)
+      '@angular/cdk': 18.2.6(@angular/common@18.2.0)(@angular/core@18.2.0)(rxjs@7.8.0)
+      '@angular/common': 18.2.0(@angular/core@18.2.0)(rxjs@7.8.0)
+      '@angular/core': 18.2.0(rxjs@7.8.0)(zone.js@0.14.3)
+      '@angular/forms': 18.2.0(@angular/common@18.2.0)(@angular/core@18.2.0)(@angular/platform-browser@18.2.0)(rxjs@7.8.0)
+      '@angular/platform-browser': 18.2.0(@angular/animations@18.2.0)(@angular/common@18.2.0)(@angular/core@18.2.0)
+      rxjs: 7.8.0
+      tslib: 2.7.0
+    dev: false
 
   /@angular/platform-browser-dynamic@18.2.0(@angular/common@18.2.0)(@angular/compiler@18.2.0)(@angular/core@18.2.0)(@angular/platform-browser@18.2.0):
     resolution: {integrity: sha512-izfaXKNC/kqOEzJG8eTnFu39VLI3vv3dTKoYOdEKRB7MTI0t0x66oZmABnHcihtkTSvXs/is+7lA5HmH2ZuIEQ==}
@@ -2893,18 +2929,6 @@ packages:
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  /@html-eslint/eslint-plugin@0.27.0:
-    resolution: {integrity: sha512-aAF14sgDKidMCCQpJ4kIhe+fwyAaAbvDlgVTIgd99F+HOWxokTTXDt39a3gewMBo76IeEHDaoizUDJQ/Vc7Mdg==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
-
-  /@html-eslint/parser@0.27.0:
-    resolution: {integrity: sha512-F/A1M0jnDAYoRvJiiSC7pIBD9DAsf4EhbndbvEi81aozD/wI8WWXON50xZPUaGHCI1C+2syTVifxDz8MvDKaQA==}
-    engines: {node: '>=8.10.0'}
-    dependencies:
-      es-html-parser: 0.0.9
-    dev: true
-
   /@humanwhocodes/module-importer@1.0.1:
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
     engines: {node: '>=12.22'}
@@ -3323,33 +3347,33 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  /@jsonjoy.com/base64@1.1.2(tslib@2.3.0):
+  /@jsonjoy.com/base64@1.1.2(tslib@2.7.0):
     resolution: {integrity: sha512-q6XAnWQDIMA3+FTiOYajoYqySkO+JSat0ytXGSuRdq9uXE7o92gzuQwQM14xaCRlBLGq3v5miDGC4vkVTn54xA==}
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.7.0
 
-  /@jsonjoy.com/json-pack@1.1.0(tslib@2.3.0):
+  /@jsonjoy.com/json-pack@1.1.0(tslib@2.7.0):
     resolution: {integrity: sha512-zlQONA+msXPPwHWZMKFVS78ewFczIll5lXiVPwFPCZUsrOKdxc2AvxU1HoNBmMRhqDZUR9HkC3UOm+6pME6Xsg==}
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
     dependencies:
-      '@jsonjoy.com/base64': 1.1.2(tslib@2.3.0)
-      '@jsonjoy.com/util': 1.3.0(tslib@2.3.0)
+      '@jsonjoy.com/base64': 1.1.2(tslib@2.7.0)
+      '@jsonjoy.com/util': 1.3.0(tslib@2.7.0)
       hyperdyperid: 1.2.0
-      thingies: 1.21.0(tslib@2.3.0)
-      tslib: 2.3.0
+      thingies: 1.21.0(tslib@2.7.0)
+      tslib: 2.7.0
 
-  /@jsonjoy.com/util@1.3.0(tslib@2.3.0):
+  /@jsonjoy.com/util@1.3.0(tslib@2.7.0):
     resolution: {integrity: sha512-Cebt4Vk7k1xHy87kHY7KSPLT77A7Ev7IfOblyLZhtYEhrdQ6fX4EoLq3xOQ3O/DRMEh2ok5nyC180E+ABS8Wmw==}
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.7.0
 
   /@leichtgewicht/ip-codec@2.0.5:
     resolution: {integrity: sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==}
@@ -4215,7 +4239,7 @@ packages:
     hasBin: true
     dependencies:
       nx: 19.8.2(@swc-node/register@1.9.1)(@swc/core@1.5.7)
-      tslib: 2.3.0
+      tslib: 2.7.0
     transitivePeerDependencies:
       - '@swc-node/register'
       - '@swc/core'
@@ -4322,7 +4346,7 @@ packages:
       piscina: 4.7.0
       rxjs: 7.8.0
       semver: 7.6.3
-      tslib: 2.3.0
+      tslib: 2.7.0
       webpack: 5.95.0(@swc/core@1.5.7)(webpack-cli@5.1.4)
       webpack-merge: 5.10.0
     transitivePeerDependencies:
@@ -4403,7 +4427,7 @@ packages:
       nx: 19.8.2(@swc-node/register@1.9.1)(@swc/core@1.5.7)
       semver: 7.6.3
       tmp: 0.2.3
-      tslib: 2.3.0
+      tslib: 2.7.0
       yargs-parser: 21.1.1
 
   /@nx/eslint-plugin@19.8.2(@swc-node/register@1.9.1)(@swc/core@1.5.7)(@types/node@18.16.9)(@typescript-eslint/parser@8.7.0)(eslint-config-prettier@9.0.0)(eslint@9.8.0)(nx@19.8.2)(typescript@5.5.2):
@@ -7865,10 +7889,6 @@ packages:
     resolution: {integrity: sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==}
     engines: {node: '>= 0.4'}
 
-  /es-html-parser@0.0.9:
-    resolution: {integrity: sha512-oniQMi+466VFsDzcdron9Ry/sqUJpDJg1bbDn0jFJKDdxXhwIOYDr4DgBnO5/yPLGj2xv+n5yy4L1Q0vAC5TYQ==}
-    dev: true
-
   /es-module-lexer@1.5.4:
     resolution: {integrity: sha512-MVNK56NiMrOwitFB7cqDwq0CQutbw+0BvLshJSse0MUNU+y1FC3bUS/AQg7oUng+/wKrrki7JfmwtVHkVfPLlw==}
 
@@ -10236,7 +10256,7 @@ packages:
     dependencies:
       copy-anything: 2.0.6
       parse-node-version: 1.0.1
-      tslib: 2.3.0
+      tslib: 2.7.0
     optionalDependencies:
       errno: 0.1.8
       graceful-fs: 4.2.11
@@ -10253,7 +10273,7 @@ packages:
     dependencies:
       copy-anything: 2.0.6
       parse-node-version: 1.0.1
-      tslib: 2.3.0
+      tslib: 2.7.0
     optionalDependencies:
       errno: 0.1.8
       graceful-fs: 4.2.11
@@ -10566,10 +10586,10 @@ packages:
     resolution: {integrity: sha512-74wDsex5tQDSClVkeK1vtxqYCAgCoXxx+K4NSHzgU/muYVYByFqa+0RnrPO9NM6naWm1+G9JmZ0p6QHhXmeYfA==}
     engines: {node: '>= 4.0.0'}
     dependencies:
-      '@jsonjoy.com/json-pack': 1.1.0(tslib@2.3.0)
-      '@jsonjoy.com/util': 1.3.0(tslib@2.3.0)
-      tree-dump: 1.0.2(tslib@2.3.0)
-      tslib: 2.3.0
+      '@jsonjoy.com/json-pack': 1.1.0(tslib@2.7.0)
+      '@jsonjoy.com/util': 1.3.0(tslib@2.7.0)
+      tree-dump: 1.0.2(tslib@2.7.0)
+      tslib: 2.7.0
 
   /meow@13.2.0:
     resolution: {integrity: sha512-pxQJQzB6djGPXh08dacEloMFopsOqGVRKFPYvPOt9XDZ1HasbgDZA74CJGreSU4G3Ak7EFJGoiH2auq+yXISgA==}
@@ -12304,7 +12324,7 @@ packages:
   /rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.7.0
 
   /safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
@@ -13241,13 +13261,13 @@ packages:
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
-  /thingies@1.21.0(tslib@2.3.0):
+  /thingies@1.21.0(tslib@2.7.0):
     resolution: {integrity: sha512-hsqsJsFMsV+aD4s3CWKk85ep/3I9XzYV/IXaSouJMYIoDlgyi11cBhsqYe9/geRfB0YIikBQg6raRaM+nIMP9g==}
     engines: {node: '>=10.18'}
     peerDependencies:
       tslib: ^2
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.7.0
 
   /throttleit@1.0.1:
     resolution: {integrity: sha512-vDZpf9Chs9mAdfY046mcPt8fg5QSZr37hEH4TXYBnDF+izxgrbRGUAAaBvIk/fJm9aOFCGFd1EsNg5AZCbnQCQ==}
@@ -13305,13 +13325,13 @@ packages:
     dependencies:
       punycode: 2.3.1
 
-  /tree-dump@1.0.2(tslib@2.3.0):
+  /tree-dump@1.0.2(tslib@2.7.0):
     resolution: {integrity: sha512-dpev9ABuLWdEubk+cIaI9cHwRNNDjkBBLXTwI4UCUFdQ5xXKqNXoK4FEciw/vxf+NQ7Cb7sGUyeUtORvHIdRXQ==}
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
     dependencies:
-      tslib: 2.3.0
+      tslib: 2.7.0
 
   /tree-kill@1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}

@@ -4,16 +4,18 @@
   "license": "MIT",
   "scripts": {
     "dev": "npx nx run-many --target=serve --projects=api,web",
-    "lint": "npx nx run-many --target=lint --fix --projects=api,web"
+    "lint": "npx nx run-many --target=lint --fix --all"
   },
   "private": true,
   "packageManager": "pnpm@8.6.10",
   "dependencies": {
     "@angular/animations": "~18.2.0",
+    "@angular/cdk": "^18.2.6",
     "@angular/common": "~18.2.0",
     "@angular/compiler": "~18.2.0",
     "@angular/core": "~18.2.0",
     "@angular/forms": "~18.2.0",
+    "@angular/material": "^18.2.6",
     "@angular/platform-browser": "~18.2.0",
     "@angular/platform-browser-dynamic": "~18.2.0",
     "@angular/router": "~18.2.0",
@@ -34,8 +36,6 @@
     "@angular/compiler-cli": "~18.2.0",
     "@angular/language-service": "~18.2.0",
     "@eslint/js": "^9.8.0",
-    "@html-eslint/eslint-plugin": "^0.27.0",
-    "@html-eslint/parser": "^0.27.0",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.2",
     "@nx/cypress": "19.8.2",

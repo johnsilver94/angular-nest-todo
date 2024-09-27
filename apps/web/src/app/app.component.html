@@ -1,5 +1,13 @@
-<ant-nx-welcome></ant-nx-welcome>
-<router-outlet></router-outlet>
-<div>
-	<h1 aria-atomic="true" aria-atomic="false">Welcome to the Angular Nest Todo App!</h1>
-</div>
+<nav class="container">
+	<a routerLinkActive="active" routerLink="/">Home</a>
+	|
+
+	<a routerLinkActive="active" routerLink="/cdk">Cdk Table</a>
+
+	|
+
+	<a routerLinkActive="active" routerLink="/material">Material Table</a>
+</nav>
+<main class="main">
+	<router-outlet></router-outlet>
+</main>

@@ -1,0 +1,108 @@
+:host {
+	width: 100%;
+}
+
+/* Add application styles & imports to this file! */
+$cdk-header-row-height: 56px;
+$cdk-row-height: 48px;
+$cdk-row-horizontal-padding: 24px;
+
+%header-cell {
+	color: rgba(119, 118, 118, 0.7);
+	font-size: 0.75rem;
+	font-weight: 300;
+	text-transform: uppercase;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+/**
+ * Flex-based table structure
+ */
+
+cdk-header-row {
+	min-height: $cdk-header-row-height;
+
+	&.sticky {
+		background: #ffffff;
+		margin-bottom: 1rem;
+		position: sticky;
+		top: 50px;
+	}
+}
+
+cdk-row,
+cdk-footer-row {
+	min-height: $cdk-row-height;
+}
+
+cdk-row,
+cdk-header-row,
+cdk-footer-row {
+	align-items: center;
+	border-style: solid;
+	border-width: 0;
+	box-sizing: border-box;
+	display: flex;
+}
+
+cdk-header-row:not(:last-of-type),
+tr.cdk-header-row:not(:last-of-type) {
+	cdk-header-cell,
+	th.cdk-header-cell {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+	}
+}
+
+cdk-header-row:not(.sticky):last-of-type,
+tr.cdk-header-row:not(.sticky):last-of-type {
+	border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+cdk-cell,
+cdk-header-cell,
+cdk-footer-cell {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	min-height: inherit;
+	padding: 0 1rem;
+	word-wrap: break-word;
+}
+
+cdk-footer-cell {
+	border-top: 1px #dadada solid;
+}
+
+cdk-header-cell {
+	@extend %header-cell;
+}
+
+/**
+ * Native HTML table structure
+ */
+
+table.cdk-table {
+	border-spacing: 0;
+	width: 100%;
+
+	td[rowspan] {
+		vertical-align: middle;
+	}
+
+	td,
+	th {
+		align-items: center;
+		min-height: inherit;
+		overflow: hidden;
+		padding: 0 0.5rem;
+		vertical-align: middle;
+		word-wrap: break-word;
+	}
+
+	th {
+		@extend %header-cell;
+	}
+}

@@ -1,7 +1,5 @@
 const nx = require("@nx/eslint-plugin")
 const eslintPluginPrettierRecommended = require("eslint-plugin-prettier/recommended")
-const html = require("@html-eslint/eslint-plugin")
-const htmlParser = require("@html-eslint/parser")
 
 module.exports = [
 	...nx.configs["flat/base"],
@@ -34,18 +32,4 @@ module.exports = [
 		// Override or add rules here
 		rules: {}
 	}
-	// {
-	// 	...html.configs["flat/recommended"],
-	// 	files: ["**/*.html"],
-	// 	plugins: {
-	// 		"@html-eslint": html
-	// 	},
-	// 	languageOptions: {
-	// 		parser: htmlParser
-	// 	},
-	// 	rules: {
-	// 		...html.configs["flat/recommended"].rules,
-	// 		"@html-eslint/indent": ["error", "tab"]
-	// 	}
-	// }
 ]
