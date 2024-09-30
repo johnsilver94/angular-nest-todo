@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common"
 import { TodosService } from "./todos.service"
 import { CreateTodoDto } from "./dto/create-todo.dto"
 import { Todo } from "./todo.model"
+import { QueryOptionsDto } from "../helpers/pagination.helper"
 
 @Controller("todos")
 export class TodosController {
@@ -12,18 +13,23 @@ export class TodosController {
 		return this.todosService.create(createUserDto)
 	}
 
+	@Post("paginated")
+	getTodosPaginated(@Body() query: QueryOptionsDto) {
+		return this.todosService.findAllPaginated(query)
+	}
+
 	@Get()
-	findAll(): Promise<Todo[]> {
+	getTodos(): Promise<Todo[]> {
 		return this.todosService.findAll()
 	}
 
 	@Get(":id")
-	findOne(@Param("id") id: string): Promise<Todo> {
+	getOne(@Param("id") id: string): Promise<Todo> {
 		return this.todosService.findOne(id)
 	}
 
 	@Delete(":id")
-	remove(@Param("id") id: string): Promise<void> {
+	removeOne(@Param("id") id: string): Promise<void> {
 		return this.todosService.remove(id)
 	}
 }

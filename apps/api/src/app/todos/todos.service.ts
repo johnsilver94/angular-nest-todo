@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/sequelize"
 import { Todo } from "./todo.model"
 import { CreateTodoDto } from "./dto/create-todo.dto"
+import { QueryOptionsQuery } from "../helpers/pagination.helper"
 
 @Injectable()
 export class TodosService {
@@ -20,6 +21,14 @@ export class TodosService {
 
 	async findAll(): Promise<Todo[]> {
 		return this.todoModel.findAll()
+	}
+
+	async findAllPaginated(query: QueryOptionsQuery) {
+		const { pageNumber, pageSize } = query
+
+		console.log("query", query)
+
+		return this.todoModel.findAll({ offset: (pageNumber - 1) * pageSize, limit: pageSize })
 	}
 
 	findOne(id: string): Promise<Todo> {
