@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/sequelize"
 import { Todo } from "./todo.model"
 import { CreateTodoDto } from "./dto/create-todo.dto"
-import { QueryOptionsQuery } from "../helpers/pagination.helper"
-import { type WhereOptions, type Order, Op } from "sequelize"
+import Paginator from "../paginator/paginator"
+import { PaginationQuery } from "../paginator/paginator.types"
 
 @Injectable()
 export class TodosService {
@@ -24,39 +24,9 @@ export class TodosService {
 		return this.todoModel.findAll()
 	}
 
-	async findAllPaginated(query: QueryOptionsQuery) {
-		const { pageNumber, pageSize, filterField, filterValue, sortField, sortDirection } = query
-
-		console.log("query", query)
-
-		let whereOptions: WhereOptions
-		let orderOptions: Order
-
-		if (filterField && filterValue) {
-			whereOptions = { [filterField]: { [Op.iLike]: `%${filterValue}%` } }
-		}
-		if (sortField && sortDirection) {
-			orderOptions = [[sortField, sortDirection]]
-		}
-
-		const todos = await this.todoModel.findAll({
-			where: whereOptions,
-			order: orderOptions,
-			offset: (pageNumber - 1) * pageSize,
-			limit: pageSize
-		})
-
-		const totalCount = await this.todoModel.count({ where: whereOptions })
-
-		return {
-			data: todos,
-			pagination: {
-				pageNumber,
-				pageSize: todos.length,
-				pagesCount: Math.ceil(todos.length / pageSize),
-				itemsCount: totalCount
-			}
-		}
+	async findAllPaginated(query: PaginationQuery) {
+		const paginator = new Paginator(Todo)
+		return paginator.paginate(query)
 	}
 
 	findOne(id: string): Promise<Todo> {
