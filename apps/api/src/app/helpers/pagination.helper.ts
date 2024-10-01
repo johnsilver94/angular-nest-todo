@@ -19,8 +19,8 @@ export interface FilterOptions {
 export type QueryOptionsQuery = PaginationOptions & SortingOptions & FilterOptions
 
 export enum SortDirection {
-	ASC = "asc",
-	DESC = "desc"
+	ASC = "ASC",
+	DESC = "DESC"
 }
 
 export interface PaginationResponse<T> {

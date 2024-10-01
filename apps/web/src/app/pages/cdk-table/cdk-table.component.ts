@@ -104,7 +104,7 @@ export class CdkTableComponent implements OnInit {
 	// filter on demand without forms
 	manualFilter() {
 		this.users.filter = this.userQuery.filter({
-			website: "org",
+			website: "com",
 			fullName: "ba"
 		})
 	}

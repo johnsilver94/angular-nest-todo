@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/sequelize"
 import { Todo } from "./todo.model"
 import { CreateTodoDto } from "./dto/create-todo.dto"
 import { QueryOptionsQuery } from "../helpers/pagination.helper"
+import { type WhereOptions, type Order, Op } from "sequelize"
 
 @Injectable()
 export class TodosService {
@@ -24,11 +25,38 @@ export class TodosService {
 	}
 
 	async findAllPaginated(query: QueryOptionsQuery) {
-		const { pageNumber, pageSize } = query
+		const { pageNumber, pageSize, filterField, filterValue, sortField, sortDirection } = query
 
 		console.log("query", query)
 
-		return this.todoModel.findAll({ offset: (pageNumber - 1) * pageSize, limit: pageSize })
+		let whereOptions: WhereOptions
+		let orderOptions: Order
+
+		if (filterField && filterValue) {
+			whereOptions = { [filterField]: { [Op.iLike]: `%${filterValue}%` } }
+		}
+		if (sortField && sortDirection) {
+			orderOptions = [[sortField, sortDirection]]
+		}
+
+		const todos = await this.todoModel.findAll({
+			where: whereOptions,
+			order: orderOptions,
+			offset: (pageNumber - 1) * pageSize,
+			limit: pageSize
+		})
+
+		const totalCount = await this.todoModel.count({ where: whereOptions })
+
+		return {
+			data: todos,
+			pagination: {
+				pageNumber,
+				pageSize: todos.length,
+				pagesCount: Math.ceil(todos.length / pageSize),
+				itemsCount: totalCount
+			}
+		}
 	}
 
 	findOne(id: string): Promise<Todo> {
