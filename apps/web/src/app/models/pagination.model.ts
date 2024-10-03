@@ -20,8 +20,8 @@ export interface FilterOptions {
 
 export type QueryOptionsQuery = PaginationOptions & FilterOptions & SortingOptions
 
-export interface PaginationResponse<T> {
-	data: T[]
+export interface PaginationResponse<TData = unknown> {
+	data: TData[]
 	pagination: {
 		pageNumber: number
 		pageSize: number
