@@ -18,7 +18,7 @@ export interface FilterOptions {
 	filterValue: string
 }
 
-export type QueryOptionsQuery = PaginationOptions
+export type QueryOptionsQuery = PaginationOptions & FilterOptions & SortingOptions
 
 export interface PaginationResponse<T> {
 	data: T[]

@@ -1,22 +1,27 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { AfterViewInit, Component, ViewChild } from "@angular/core"
-import { RouterOutlet } from "@angular/router"
+import { AfterViewInit, Component, ViewChild, OnInit, inject } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
-import { CdkTableModule } from "@angular/cdk/table"
-import { MatSort, MatSortable, MatSortModule } from "@angular/material/sort"
+import { MatSort, MatSortModule } from "@angular/material/sort"
 import { MatTableDataSource, MatTableModule } from "@angular/material/table"
 import { MatProgressBarModule } from "@angular/material/progress-bar"
-import { catchError, map, of, startWith, Subject, switchMap } from "rxjs"
-import { HighlightSearch } from "../../pipes/highlight.pipe"
-import { PaginatorComponent } from "../../components/paginator/paginator.component"
-import { UserQuery } from "../../query/users.query"
+import { catchError, debounceTime, distinctUntilChanged, map, merge, of, startWith, switchMap } from "rxjs"
 import { ROW_ANIMATION } from "../../animations/row.animation"
 import { Todo } from "../../models/todo.model"
 import { TodosService } from "../../services/todo.service"
 import { CommonModule } from "@angular/common"
 import { MatInputModule } from "@angular/material/input"
 import { MatSelectModule } from "@angular/material/select"
-import { MatPaginatorModule } from "@angular/material/paginator"
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
+import { MatIconModule, MatIconRegistry } from "@angular/material/icon"
+import { LoadingState, PaginationResponse, SortDirection } from "../../models/pagination.model"
+import { MatFormFieldModule } from "@angular/material/form-field"
+import { MatButtonModule } from "@angular/material/button"
+import { DomSanitizer } from "@angular/platform-browser"
+
+const SVG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+</svg>
+`
 
 @Component({
 	selector: "ant-todo-table",
@@ -24,67 +29,76 @@ import { MatPaginatorModule } from "@angular/material/paginator"
 	imports: [
 		CommonModule,
 		FormsModule,
-		CdkTableModule,
 		ReactiveFormsModule,
-		RouterOutlet,
-		HighlightSearch,
-		PaginatorComponent,
 		MatTableModule,
 		MatInputModule,
 		MatSelectModule,
 		MatSortModule,
 		MatPaginatorModule,
-		MatProgressBarModule
+		MatProgressBarModule,
+		MatFormFieldModule,
+		MatButtonModule,
+		MatIconModule
 	],
 	templateUrl: "./todo-table.component.html",
 	styleUrl: "./todo-table.component.scss",
-	providers: [UserQuery, HighlightSearch],
 	animations: [ROW_ANIMATION]
 })
-export class TodoTableComponent implements AfterViewInit {
+export class TodoTableComponent implements AfterViewInit, OnInit {
 	todosDatasource: MatTableDataSource<Todo> = new MatTableDataSource<Todo>()
-	initialSort: MatSortable = {
-		id: "id",
-		start: "desc",
-		disableClear: false
-	}
+	todos: LoadingState<PaginationResponse<Todo>> = { error: null, loading: true }
 
 	isLoading = false
 	itemsCount = 0
+	pageSize = 10
 	displayedColumns = ["id", "title", "description", "completed"]
 	queryForm: FormGroup
 
-	nameQueryChanged: Subject<string> = new Subject<string>()
-	@ViewChild("pagination", { static: true })
+	@ViewChild("paginator", { static: true })
 	// @ts-expect-error
-	paginator: PaginatorComponent
+	paginator: MatPaginator
 	// @ts-expect-error
-	@ViewChild(MatSort, { static: true }) sort: MatSort
-	pageSize = 10
+	@ViewChild(MatSort) sort: MatSort
 
-	constructor(
-		private todosService: TodosService,
-		public userQuery: UserQuery
-	) {
+	constructor(private todosService: TodosService) {
 		this.queryForm = this.createQueryForm()
+		const iconRegistry = inject(MatIconRegistry)
+		const sanitizer = inject(DomSanitizer)
+
+		iconRegistry.addSvgIconLiteral("remove", sanitizer.bypassSecurityTrustHtml(SVG_ICON))
 	}
 
-	// ngOnInit(): void {
-
-	// }
+	ngOnInit(): void {
+		// form filter listener
+		this.queryForm.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((filterValues) => {
+			console.log("🚀 ~ TodoTableComponent ~ this.queryForm.valueChanges.pipe ~ filterValues:", filterValues)
+		})
+	}
 
 	ngAfterViewInit(): void {
 		this.todosDatasource.paginator = this.paginator
+		this.todosDatasource.sort = this.sort
+
+		this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0))
+
 		// connect data to table
-		this.paginator.page
+		merge(
+			this.paginator.page,
+			this.sort.sortChange,
+			this.queryForm.valueChanges.pipe(debounceTime(300), distinctUntilChanged())
+		)
 			.pipe(
 				startWith({}),
-				switchMap(() => {
+				switchMap(({ title }) => {
 					this.isLoading = true
 					return this.todosService
 						.getUsersPaginated({
 							pageNumber: this.paginator.pageIndex + 1,
-							pageSize: this.paginator.pageSize
+							pageSize: this.paginator.pageSize,
+							filterField: "title",
+							filterValue: title,
+							sortField: this.sort.active,
+							sortDirection: this.sort.direction === "asc" ? SortDirection.ASC : SortDirection.DESC
 						})
 						.pipe(catchError(() => of(null)))
 				}),
@@ -108,8 +122,7 @@ export class TodoTableComponent implements AfterViewInit {
 
 	createQueryForm() {
 		return new FormGroup({
-			title: new FormControl(""),
-			description: new FormControl("")
+			title: new FormControl("")
 		})
 	}
 }

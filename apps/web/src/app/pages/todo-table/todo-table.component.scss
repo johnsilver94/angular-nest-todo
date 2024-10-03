@@ -1,4 +1,11 @@
 :host {
+	display: block;
+	margin: auto;
+	width: 75%;
+}
+
+.mat-mdc-form-field {
+	font-size: 14px;
 	width: 100%;
 }
 
@@ -86,7 +93,7 @@ cdk-header-cell {
 
 table.cdk-table {
 	border-spacing: 0;
-	width: 100%;
+	width: 75%;
 
 	td[rowspan] {
 		vertical-align: middle;

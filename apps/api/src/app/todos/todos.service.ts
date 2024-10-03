@@ -12,7 +12,7 @@ export class TodosService {
 		private todoModel: typeof Todo
 	) {}
 
-	create(createTodoDto: CreateTodoDto): Promise<Todo> {
+	async create(createTodoDto: CreateTodoDto): Promise<Todo> {
 		return this.todoModel.create({
 			title: createTodoDto.title,
 			description: createTodoDto.description,
@@ -29,7 +29,7 @@ export class TodosService {
 		return paginator.paginate(query)
 	}
 
-	findOne(id: string): Promise<Todo> {
+	async findOne(id: string): Promise<Todo> {
 		return this.todoModel.findOne({
 			where: {
 				id
