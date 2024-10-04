@@ -25,6 +25,8 @@
 		"@nestjs/core": "^10.0.2",
 		"@nestjs/platform-express": "^10.0.2",
 		"@nestjs/sequelize": "^10.0.1",
+		"@ngneat/elf": "^2.5.1",
+		"@ngneat/elf-entities": "^5.0.2",
 		"@nrwl/angular": "^19.8.2",
 		"axios": "^1.6.0",
 		"class-transformer": "^0.5.1",
