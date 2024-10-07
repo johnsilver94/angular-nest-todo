@@ -1,0 +1,27 @@
+<h2>
+	Awesome Todo List
+	{{ store.allItemsCount() }}
+	({{ store.doneCount() }}/{{ store.undoneCount() }} {{ store.percentageDone() | number: "1.0-0" }}% done)
+</h2>
+<ul>
+	@for (todo of store.items(); track $index) {
+		<li key="track">
+			<label for="new-todo">
+				<input
+					id="update-todo"
+					type="checkbox"
+					(change)="updateCompleted(todo, $event)"
+					[checked]="todo.completed"
+					[title]="todo.title"
+					[placeholder]="todo.title" />
+				{{ todo.title }}
+			</label>
+			<button type="button" (click)="deleteTodo(todo)">Remove</button>
+		</li>
+	}
+</ul>
+<form [formGroup]="createTodoForm">
+	<input formControlName="title" type="text" placeholder="Todo title" />
+	<input formControlName="description" type="text" placeholder="Todo description" />
+	<button type="submit" (click)="addTodo()">Add Todo</button>
+</form>

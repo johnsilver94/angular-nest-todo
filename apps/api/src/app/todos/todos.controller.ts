@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common"
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common"
 import { TodosService } from "./todos.service"
 import { CreateTodoDto } from "./dto/create-todo.dto"
 import { Todo } from "./todo.model"
 import { PaginationQueryDto } from "../paginator/dto/paginator-query.dto"
+import { UpdateTodoDto } from "./dto/update-todo.dto"
 
 @Controller("todos")
 export class TodosController {
@@ -26,6 +27,11 @@ export class TodosController {
 	@Get(":id")
 	getOne(@Param("id") id: string): Promise<Todo> {
 		return this.todosService.findOne(id)
+	}
+
+	@Patch(":id")
+	updateOne(@Param("id") id: string, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {
+		return this.todosService.updateOne(id, updateTodoDto)
 	}
 
 	@Delete(":id")

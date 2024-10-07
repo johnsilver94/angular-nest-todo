@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 import { InjectModel } from "@nestjs/sequelize"
 import { Todo } from "./todo.model"
 import { CreateTodoDto } from "./dto/create-todo.dto"
 import Paginator from "../paginator/paginator"
 import { PaginationQuery } from "../paginator/paginator.types"
+import { UpdateTodoDto } from "./dto/update-todo.dto"
 
 @Injectable()
 export class TodosService {
@@ -35,6 +36,14 @@ export class TodosService {
 				id
 			}
 		})
+	}
+
+	async updateOne(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
+		const todo = await this.todoModel.findOne({ where: { id } })
+		if (!todo) {
+			throw new NotFoundException(`To-do could not be found!`)
+		}
+		return todo.update(updateTodoDto)
 	}
 
 	async remove(id: string): Promise<void> {
