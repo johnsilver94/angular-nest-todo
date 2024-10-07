@@ -2,51 +2,48 @@ import { CommonModule } from "@angular/common"
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core"
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { RouterOutlet } from "@angular/router"
-import { TodoStore } from "./todo.store"
-import { Todo } from "./model"
+import { NGRXEntitiesTodoStore, Todo } from "./ngrx-entities.store"
 
 @Component({
-	selector: "ant-crud-todo",
+	selector: "ant-ngrx-entities",
 	standalone: true,
 	imports: [CommonModule, RouterOutlet, ReactiveFormsModule],
-	templateUrl: "./crud-todo.component.html",
-	styleUrl: "./crud-todo.component.scss",
-	providers: [TodoStore],
+	templateUrl: "./ngrx-entities.component.html",
+	styleUrl: "./ngrx-entities.component.scss",
+	providers: [NGRXEntitiesTodoStore],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CRUDTodoComponent {
-	readonly store = inject(TodoStore)
+export class NGRXEntitiesTodoComponent {
+	readonly store = inject(NGRXEntitiesTodoStore)
 
 	createTodoForm: FormGroup
 
 	constructor() {
 		this.createTodoForm = new FormGroup({
-			title: new FormControl<string>("", Validators.required),
-			description: new FormControl<string>("", Validators.required),
+			text: new FormControl<string>("", Validators.required),
 			completed: new FormControl<boolean>(false)
 		})
 	}
 
 	addTodo() {
-		this.store.addItem({
-			title: this.createTodoForm.value.title,
-			completed: this.createTodoForm.value.completed,
-			description: "default"
+		this.store.addTodo({
+			key: new Date().getTime(),
+			text: this.createTodoForm.value.text,
+			completed: this.createTodoForm.value.completed
 		})
 	}
 
 	updateCompleted(todo: Todo, event: Event) {
 		const eventTarget = event.target as HTMLInputElement
 		if (!eventTarget) return
-		this.store.updateItem({
-			id: todo.id,
-			title: todo.title,
-			completed: eventTarget.checked,
-			description: todo.description
+		this.store.updateTodo({
+			key: todo.key,
+			text: todo.text,
+			completed: eventTarget.checked
 		})
 	}
 
 	deleteTodo(todo: Todo) {
-		this.store.deleteItem(todo)
+		this.store.removeTodo(todo.key)
 	}
 }
