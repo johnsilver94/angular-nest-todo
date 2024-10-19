@@ -1,16 +1,5 @@
-<section class="section">
-	<div class="section-header">
-		<mat-checkbox [checked]="task().completed" [indeterminate]="partiallyComplete()" (change)="update($event.checked)">
-			{{ task().name }}
-		</mat-checkbox>
-	</div>
-	<ul class="section-content">
-		@for (subtask of task().subtasks; track subtask; let i = $index) {
-			<li>
-				<mat-checkbox [checked]="subtask.completed" (change)="update($event.checked, i)">
-					{{ subtask.name }}
-				</mat-checkbox>
-			</li>
-		}
-	</ul>
-</section>
+<div class="list">
+	@for (item of [1, 2, 3, 4, 5]; track $index) {
+		<ant-checkbox-group />
+	}
+</div>
