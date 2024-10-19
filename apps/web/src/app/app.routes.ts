@@ -6,6 +6,7 @@ import { ElfTodosComponent } from "./pages/elf-todos/elf-todos.component"
 import { NgrxTodosComponent } from "./pages/ngrx-todos/ngrx-todos.component"
 import { CRUDTodoComponent } from "./pages/crud-todo/crud-todo.component"
 import { NGRXEntitiesTodoComponent } from "./pages/ngrx-entities/ngrx-entities.component"
+import { CheckboxGroupsComponent } from "./pages/checkbox-groups/checkbox-groups.component"
 
 export const routes: Routes = [
 	{ path: "material", component: MaterialTableComponent },
@@ -14,5 +15,6 @@ export const routes: Routes = [
 	{ path: "elf-todos", component: ElfTodosComponent },
 	{ path: "ngrx-todos", component: NgrxTodosComponent },
 	{ path: "crud-todo", component: CRUDTodoComponent },
-	{ path: "ngrx-entities", component: NGRXEntitiesTodoComponent }
+	{ path: "ngrx-entities", component: NGRXEntitiesTodoComponent },
+	{ path: "checkbox-groups", component: CheckboxGroupsComponent }
 ]

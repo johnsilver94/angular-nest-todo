@@ -2,14 +2,14 @@ import { patchState, signalStore, withHooks, withMethods, withState } from "@ngr
 import { tapResponse } from "@ngrx/operators"
 import { rxMethod } from "@ngrx/signals/rxjs-interop"
 import { Todo } from "../../models/todo.model"
-import { PaginationResponse, QueryOptions, SortDirection } from "../../models/pagination.model"
+import { Paginated, QueryOptions, SortDirection } from "../../models/pagination.model"
 import { inject } from "@angular/core"
 import { TodosService } from "../../services/todos.service"
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from "rxjs"
 import { MatTableDataSource } from "@angular/material/table"
 
 type TodosState = {
-	todos: PaginationResponse<Todo>
+	todos: Paginated<Todo>
 	todosDatasource: MatTableDataSource<Todo>
 	isLoading: boolean
 	query: QueryOptions
@@ -42,7 +42,7 @@ export const TodosStore = signalStore(
 				tap(() => patchState(store, { isLoading: true, todos: initialState.todos })),
 				switchMap((query) => {
 					console.log("🚀 ~ switchMap ~ query:", query)
-					return todosService.getTodos(query).pipe(
+					return todosService.getTodosPaginated(query).pipe(
 						tapResponse({
 							next: (todos) => patchState(store, { todos, todosDatasource: new MatTableDataSource(todos.data) }),
 							error: console.error,

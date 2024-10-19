@@ -1,6 +1,6 @@
 import { Model, ModelCtor } from "sequelize-typescript"
 import { Op, type Order, type WhereOptions } from "sequelize"
-import { PaginationQuery, PaginationResponse } from "./paginator.types"
+import { PaginationQuery, Paginated } from "./paginator.types"
 
 export default class Paginator<T extends Model> {
 	private model: ModelCtor<T>
@@ -9,7 +9,7 @@ export default class Paginator<T extends Model> {
 		this.model = model
 	}
 
-	async paginate(query: PaginationQuery): Promise<PaginationResponse<T>> {
+	async paginate(query: PaginationQuery): Promise<Paginated<T>> {
 		const { pageNumber, pageSize, filterField, filterValue, sortField, sortDirection } = query
 
 		let whereOptions: WhereOptions

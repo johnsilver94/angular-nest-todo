@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core"
 import { catchError, map, Observable, of, startWith } from "rxjs"
-import { LoadingState, PaginationResponse, QueryOptions } from "../models/pagination.model"
+import { LoadingState, Paginated, QueryOptions } from "../models/pagination.model"
 import { Todo } from "../models/todo.model"
 import { HttpClient } from "@angular/common/http"
 
@@ -8,19 +8,19 @@ import { HttpClient } from "@angular/common/http"
 export class TodosService {
 	constructor(private http: HttpClient) {}
 
-	getTodos(query: QueryOptions): Observable<PaginationResponse<Todo>> {
-		return this.http.post<PaginationResponse<Todo>>("api/todos/paginated", query)
-	}
-
-	getUsersPaginated(query: QueryOptions): Observable<LoadingState<PaginationResponse<Todo>>> {
-		return this.http.post<PaginationResponse<Todo>>("api/todos/paginated", query).pipe(
+	getTodosWithLoader(query: QueryOptions): Observable<LoadingState<Paginated<Todo>>> {
+		return this.http.post<Paginated<Todo>>("api/todos/paginated", query).pipe(
 			map((data) => ({ data, loading: false })),
 			catchError((error) => of({ error, loading: false })),
 			startWith({ error: null, loading: true })
 		)
 	}
 
-	getUserById(id: number): Observable<LoadingState<Todo>> {
+	getTodosPaginated(query: QueryOptions): Observable<Paginated<Todo>> {
+		return this.http.post<Paginated<Todo>>("api/todos/paginated", query)
+	}
+
+	getTodoById(id: number): Observable<LoadingState<Todo>> {
 		return this.http.get<Todo>(`api/todos/${id}`).pipe(
 			map((data) => ({ data, loading: false })),
 			catchError((error) => of({ error, loading: false })),

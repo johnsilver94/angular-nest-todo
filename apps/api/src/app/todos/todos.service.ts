@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/sequelize"
 import { Todo } from "./todo.model"
 import { CreateTodoDto } from "./dto/create-todo.dto"
 import Paginator from "../paginator/paginator"
-import { PaginationQuery } from "../paginator/paginator.types"
+import { Paginated, PaginationQuery } from "../paginator/paginator.types"
 import { UpdateTodoDto } from "./dto/update-todo.dto"
 
 @Injectable()
@@ -25,7 +25,7 @@ export class TodosService {
 		return this.todoModel.findAll()
 	}
 
-	async findAllPaginated(query: PaginationQuery) {
+	async findAllPaginated(query: PaginationQuery): Promise<Paginated<Todo>> {
 		const paginator = new Paginator(Todo)
 		return paginator.paginate(query)
 	}

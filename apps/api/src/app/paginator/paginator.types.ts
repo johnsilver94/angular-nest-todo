@@ -20,8 +20,8 @@ export enum SortDirection {
 	DESC = "DESC"
 }
 
-export interface PaginationResponse<T> {
-	data: T[]
+export interface Paginated<TData = unknown> {
+	data: TData[]
 	pagination: {
 		pageNumber: number
 		pageSize: number

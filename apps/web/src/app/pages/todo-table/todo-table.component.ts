@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { AfterViewInit, Component, ViewChild, inject } from "@angular/core"
+import { AfterViewInit, Component, ViewChild } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { MatSort, MatSortModule } from "@angular/material/sort"
 import { MatTableDataSource, MatTableModule } from "@angular/material/table"
@@ -12,17 +12,11 @@ import { CommonModule } from "@angular/common"
 import { MatInputModule } from "@angular/material/input"
 import { MatSelectModule } from "@angular/material/select"
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
-import { MatIconModule, MatIconRegistry } from "@angular/material/icon"
-import { LoadingState, PaginationResponse, SortDirection } from "../../models/pagination.model"
+import { MatIconModule } from "@angular/material/icon"
+import { LoadingState, Paginated, SortDirection } from "../../models/pagination.model"
 import { MatFormFieldModule } from "@angular/material/form-field"
 import { MatButtonModule } from "@angular/material/button"
 import { MatMenuModule } from "@angular/material/menu"
-import { DomSanitizer } from "@angular/platform-browser"
-
-const SVG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-</svg>
-`
 
 @Component({
 	selector: "ant-todo-table",
@@ -48,7 +42,7 @@ const SVG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0
 })
 export class TodoTableComponent implements AfterViewInit {
 	todosDatasource: MatTableDataSource<Todo> = new MatTableDataSource<Todo>()
-	todos: LoadingState<PaginationResponse<Todo>> = { error: null, loading: false }
+	todos: LoadingState<Paginated<Todo>> = { error: null, loading: false }
 	queryForm: FormGroup
 	displayedColumns = ["id", "title", "description", "completed", "actions"]
 
@@ -60,10 +54,6 @@ export class TodoTableComponent implements AfterViewInit {
 
 	constructor(private todosService: TodosService) {
 		this.queryForm = this.createQueryForm()
-		const iconRegistry = inject(MatIconRegistry)
-		const sanitizer = inject(DomSanitizer)
-
-		iconRegistry.addSvgIconLiteral("remove", sanitizer.bypassSecurityTrustHtml(SVG_ICON))
 	}
 
 	ngAfterViewInit(): void {
@@ -84,7 +74,7 @@ export class TodoTableComponent implements AfterViewInit {
 			.pipe(
 				startWith({}),
 				switchMap(({ title }) =>
-					this.todosService.getUsersPaginated({
+					this.todosService.getTodosWithLoader({
 						pageNumber: this.paginator.pageIndex + 1,
 						pageSize: this.paginator.pageSize,
 						filterField: "title",
