@@ -1,16 +1,20 @@
-<section class="section">
-	<div class="section-header">
+@if (task().type !== "list") {
+	<div class="section-header" [ngClass]="{ task: task().type === 'task' }">
 		<mat-checkbox [checked]="task().completed" [indeterminate]="partiallyComplete()" (change)="update($event.checked)">
 			{{ task().name }}
 		</mat-checkbox>
 	</div>
-	<ul class="section-content">
-		@for (subtask of task().subtasks; track subtask; let i = $index) {
+}
+<ul class="section-content" [ngClass]="{ list: task().type === 'list' }">
+	@for (subtask of task().subtasks; track subtask; let i = $index) {
+		@if (subtask.type === "subtask") {
+			<ant-checkbox-group [task]="subtask" (updateTask)="onUpdateTask($event)" />
+		} @else {
 			<li>
 				<mat-checkbox [checked]="subtask.completed" (change)="update($event.checked, i)">
 					{{ subtask.name }}
 				</mat-checkbox>
 			</li>
 		}
-	</ul>
-</section>
+	}
+</ul>

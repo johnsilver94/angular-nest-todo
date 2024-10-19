@@ -487,87 +487,87 @@ export const permissionsTree: PermissionsTree[] = [
 		name: "Admin area",
 		description: "Administrative permissions",
 		categories: [
-			// {
-			//     id: '4',
-			//     tenant_id: '1',
-			//     created_at: '2024-01-01',
-			//     updated_at: '2024-03-03',
-			//     key: 'user-groups',
-			//     name: 'User groups',
-			//     description: 'Manage permissions related to user groups',
-			//     subcategories: [
-			//         {
-			//             id: '8',
-			//             parent_key: '4', // subcategory for User groups category
-			//             tenant_id: '1',
-			//             created_at: '2024-01-01',
-			//             updated_at: '2024-03-03',
-			//             key: 'view-capabilities',
-			//             name: 'View capabilities',
-			//             description: 'Manage permissions related to viewing user groups',
-			//             permissions: [
-			//                 {
-			//                     id: '8',
-			//                     tenant_id: '1',
-			//                     created_at: '2024-01-01',
-			//                     updated_at: '2024-03-03',
-			//                     category_key: '8',
-			//                     section_key: '3',
-			//                     name: 'View user groups in listing',
-			//                     description:
-			//                         'Allow users to be able to access the User Groups section and view the table with the defined User Groups',
-			//                     deleted_at: null,
-			//                 },
-			//                 {
-			//                     id: '9',
-			//                     tenant_id: '1',
-			//                     created_at: '2024-01-01',
-			//                     updated_at: '2024-03-03',
-			//                     category_key: '8',
-			//                     section_key: '3',
-			//                     name: 'View user groups in detail page',
-			//                     description:
-			//                         'Allow users to be able to access the User Groups details page for a user group and view the details of that User Groups',
-			//                     deleted_at: null,
-			//                 },
-			//             ],
-			//         },
-			//         {
-			//             id: '9',
-			//             parent_key: '4', // subcategory for User groups category
-			//             tenant_id: '1',
-			//             created_at: '2024-01-01',
-			//             updated_at: '2024-03-03',
-			//             key: 'edit-capabilities',
-			//             name: 'Edit capabilities',
-			//             description: 'Manage permissions related to viewing user groups',
-			//             permissions: [
-			//                 {
-			//                     id: '10',
-			//                     tenant_id: '1',
-			//                     created_at: '2024-01-01',
-			//                     updated_at: '2024-03-03',
-			//                     category_key: '9',
-			//                     section_key: '3',
-			//                     name: 'Edit group definition',
-			//                     description: 'Allow users to edit the user group definition',
-			//                     deleted_at: null,
-			//                 },
-			//                 {
-			//                     id: '11',
-			//                     tenant_id: '1',
-			//                     created_at: '2024-01-01',
-			//                     updated_at: '2024-03-03',
-			//                     category_key: '9',
-			//                     section_key: '3',
-			//                     name: 'Edit group permissions',
-			//                     description: 'Allow users to edit the permissions of a user group',
-			//                     deleted_at: null,
-			//                 },
-			//             ],
-			//         },
-			//     ],
-			// },
+			{
+				id: "4",
+				tenant_id: "1",
+				created_at: "2024-01-01",
+				updated_at: "2024-03-03",
+				key: "user-groups",
+				name: "User groups",
+				description: "Manage permissions related to user groups",
+				subcategories: [
+					{
+						id: "8",
+						parent_key: "4", // subcategory for User groups category
+						tenant_id: "1",
+						created_at: "2024-01-01",
+						updated_at: "2024-03-03",
+						key: "view-capabilities",
+						name: "View capabilities",
+						description: "Manage permissions related to viewing user groups",
+						permissions: [
+							{
+								id: "8",
+								tenant_id: "1",
+								created_at: "2024-01-01",
+								updated_at: "2024-03-03",
+								category_key: "8",
+								section_key: "3",
+								name: "View user groups in listing",
+								description:
+									"Allow users to be able to access the User Groups section and view the table with the defined User Groups",
+								deleted_at: null
+							},
+							{
+								id: "9",
+								tenant_id: "1",
+								created_at: "2024-01-01",
+								updated_at: "2024-03-03",
+								category_key: "8",
+								section_key: "3",
+								name: "View user groups in detail page",
+								description:
+									"Allow users to be able to access the User Groups details page for a user group and view the details of that User Groups",
+								deleted_at: null
+							}
+						]
+					},
+					{
+						id: "9",
+						parent_key: "4", // subcategory for User groups category
+						tenant_id: "1",
+						created_at: "2024-01-01",
+						updated_at: "2024-03-03",
+						key: "edit-capabilities",
+						name: "Edit capabilities",
+						description: "Manage permissions related to viewing user groups",
+						permissions: [
+							{
+								id: "10",
+								tenant_id: "1",
+								created_at: "2024-01-01",
+								updated_at: "2024-03-03",
+								category_key: "9",
+								section_key: "3",
+								name: "Edit group definition",
+								description: "Allow users to edit the user group definition",
+								deleted_at: null
+							},
+							{
+								id: "11",
+								tenant_id: "1",
+								created_at: "2024-01-01",
+								updated_at: "2024-03-03",
+								category_key: "9",
+								section_key: "3",
+								name: "Edit group permissions",
+								description: "Allow users to edit the permissions of a user group",
+								deleted_at: null
+							}
+						]
+					}
+				]
+			},
 			{
 				id: "5",
 				tenant_id: "1",

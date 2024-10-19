@@ -1,12 +1,8 @@
 .section {
-	border: 1px solid black;
-	border-radius: 8px;
-	max-width: 500px;
-	padding: 12px;
-	width: auto;
-
 	&-header {
-		border-bottom: 1px solid gray;
+		&.task {
+			border-bottom: 1px solid gray;
+		}
 		height: 42px;
 		width: 100%;
 
@@ -20,5 +16,9 @@
 		margin-block-end: 0.25rem;
 		margin-block-start: 0.25rem;
 		padding-inline-start: 2.5rem;
+
+		&.list {
+			padding-inline-start: 0.75rem;
+		}
 	}
 }

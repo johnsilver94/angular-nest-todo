@@ -1,5 +1,7 @@
 <div class="list">
-	@for (item of [1, 2, 3, 4, 5]; track $index) {
-		<ant-checkbox-group />
+	@for (task of tasks; track $index) {
+		<section class="section">
+			<ant-checkbox-group [task]="task" />
+		</section>
 	}
 </div>
