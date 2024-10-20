@@ -15,12 +15,6 @@ import { MatCheckboxModule } from "@angular/material/checkbox"
 import { Task } from "../checkbox-groups.component"
 import { CommonModule } from "@angular/common"
 
-export type PermissionsGroup = {
-	name: string
-	completed: boolean
-	childrens?: PermissionsGroup[]
-}
-
 @Component({
 	selector: "ant-checkbox-group",
 	standalone: true,
@@ -36,7 +30,6 @@ export class CheckboxGroupComponent implements OnChanges {
 
 	@Input()
 	set task(data: Task) {
-		console.log("🚀 ~ CheckboxGroupComponent ~ @Input ~ data:", data)
 		this._task.set(data)
 	}
 
@@ -80,6 +73,5 @@ export class CheckboxGroupComponent implements OnChanges {
 
 			return { ...task }
 		})
-		console.log("🚀 ~ CheckboxGroupComponent ~ this._task.update ~ this._task:", this.task())
 	}
 }

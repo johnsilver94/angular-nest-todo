@@ -1,42 +1,42 @@
 type Base = {
-    id: string;
-    tenant_id: string;
-    created_at: string;
-    updated_at: string;
-};
+	id: string
+	tenant_id: string
+	created_at: string
+	updated_at: string
+}
 
 export type Permission = Base & {
-    type?: string; // permission details for opa
-    resource?: string; // permission details for opa
-    action?: string; // permission details for opa
-    condition?: any; // permission details for opa
-    module_key?: string;
-    category_key?: string;
-    section_key?: string;
-    name: string;
-    description: string;
-    deleted_at: string | null;
-};
+	type?: string // permission details for opa
+	resource?: string // permission details for opa
+	action?: string // permission details for opa
+	condition?: any // permission details for opa
+	module_key?: string
+	category_key?: string
+	section_key?: string
+	name: string
+	description: string
+	deleted_at: string | null
+}
 
 export type PermissionCategory = Base & {
-    key: string;
-    parent_key?: string; // used for subcategories;
-    name: string;
-    description: string;
-};
+	key: string
+	parent_key?: string // used for subcategories;
+	name: string
+	description: string
+}
 
 export type PermissionSection = Base & {
-    key: string;
-    name: string;
-    description: string;
-};
+	key: string
+	name: string
+	description: string
+}
 
 export type PermissionTreeCategory = PermissionCategory & {
-    permissions?: Permission[];
-    subcategories?: (PermissionCategory & { permissions?: Permission[] })[];
-};
+	permissions?: Permission[]
+	subcategories?: (PermissionCategory & { permissions?: Permission[] })[]
+}
 
 export type PermissionsTree = PermissionSection & {
-    categories?: PermissionTreeCategory[];
-    permissions?: Permission[];
-};
+	categories?: PermissionTreeCategory[]
+	permissions?: Permission[]
+}

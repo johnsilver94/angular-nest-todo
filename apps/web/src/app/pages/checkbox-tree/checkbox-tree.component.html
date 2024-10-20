@@ -1,0 +1,7 @@
+<div class="list">
+	@for (treeNode of checkBoxTree; track $index) {
+		<section class="section">
+			<ant-checkbox-group [group]="treeNode" />
+		</section>
+	}
+</div>

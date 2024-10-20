@@ -33,12 +33,7 @@ export class CheckboxGroupsComponent implements OnInit {
 	tasks: Task[] = []
 
 	ngOnInit(): void {
-		console.log("CheckboxGroupsComponent: tick:", Date.now())
-		console.log("this.store.getPermissionsTree():", this.store.getPermissionsTree()[0])
-
 		const tasks = this.store.getPermissionsTree().map((section) => {
-			console.log("🚀 ~ CheckboxGroupsComponent ~ tasks ~ section:", section)
-
 			if (section.categories?.length && !section.permissions?.length) {
 				return section.categories?.map((category) => {
 					let subtasks: Task[] = [] as Task[]
@@ -56,9 +51,6 @@ export class CheckboxGroupsComponent implements OnInit {
 								: []
 						}))
 					}
-
-					console.log("🚀 ~ CheckboxGroupsComponent ~ subtasks=category.subcategories?.map ~ subtasks:", subtasks)
-
 					const leafs = category.permissions?.length
 						? category.permissions?.map(({ id, name }) => ({
 								name,
@@ -90,8 +82,7 @@ export class CheckboxGroupsComponent implements OnInit {
 				}
 			}
 		})
-		console.log("🚀 ~ CheckboxGroupsComponent ~ tasks ~ tasks:", tasks.flat())
-		// this.tasks.set(tasks.flat() as Task[])
+
 		this.tasks = tasks.flat() as Task[]
 	}
 }

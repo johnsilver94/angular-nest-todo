@@ -1,12 +1,13 @@
-:host {
-	display: flex;
-	justify-content: center;
-}
+// :host {
+// 	display: flex;
+// 	justify-content: center;
+// }
 
 .section {
 	border: 1px solid black;
 	border-radius: 8px;
 	max-width: 500px;
+	min-width: 350px;
 	padding: 12px;
 	width: auto;
 }
