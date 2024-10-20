@@ -82,6 +82,47 @@ export class CheckboxTreeComponent {
 				{ type: "leaf", data: { name: "Task 2.2", completed: false } },
 				{ type: "leaf", data: { name: "Task 2.3", completed: false } }
 			]
+		},
+		{
+			type: "parent",
+			data: { name: "Task 3", completed: false },
+			childrens: [
+				{
+					type: "intermediate",
+					data: { name: "Task 3.1", completed: false },
+					childrens: [
+						{
+							type: "intermediate",
+							data: {
+								name: "Task 3.1.1",
+								completed: false
+							},
+							childrens: [
+								{
+									type: "intermediate",
+									data: { name: "Task 3.1.1.1", completed: false },
+									childrens: [
+										{ type: "leaf", data: { name: "Task 3.1.1.1.1", completed: false } },
+										{ type: "leaf", data: { name: "Task 3.1.1.1.2", completed: false } },
+										{
+											type: "intermediate",
+											data: { name: "Task 3.1.1.1.3", completed: false },
+											childrens: [
+												{
+													type: "leaf",
+													data: { name: "Task 3.1.1.1.3.1", completed: false }
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{ type: "leaf", data: { name: "Task 3.1.2", completed: false } },
+						{ type: "leaf", data: { name: "Task 3.1.3", completed: false } }
+					]
+				}
+			]
 		}
 	]
 }

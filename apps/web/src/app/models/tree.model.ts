@@ -37,5 +37,5 @@ export type CheckBoxTreeNode = TreeNode<CheckBoxData>
 export type Section = {
 	name: string
 	description: string
-	tree: TreeNode[]
+	tree: CheckBoxTreeNode[]
 }

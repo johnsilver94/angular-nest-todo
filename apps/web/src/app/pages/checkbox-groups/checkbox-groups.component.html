@@ -1,7 +1,13 @@
-<div class="list">
-	@for (task of tasks; track $index) {
-		<section class="section">
-			<ant-checkbox-group [task]="task" />
-		</section>
-	}
-</div>
+@for (section of store.getSections(); track $index) {
+	<div>
+		<h1>{{ section.name }}</h1>
+		<p>{{ section.description }}</p>
+	</div>
+	<div class="list">
+		@for (subtree of section.tree; track $index) {
+			<section class="section">
+				<ant-checkbox-group [node]="subtree" />
+			</section>
+		}
+	</div>
+}

@@ -12,8 +12,8 @@ import {
 } from "@angular/core"
 import { FormsModule } from "@angular/forms"
 import { MatCheckboxModule } from "@angular/material/checkbox"
-import { Task } from "../checkbox-groups.component"
 import { CommonModule } from "@angular/common"
+import { CheckBoxTreeNode } from "../../../models/tree.model"
 
 @Component({
 	selector: "ant-checkbox-group",
@@ -24,54 +24,72 @@ import { CommonModule } from "@angular/common"
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckboxGroupComponent implements OnChanges {
-	_task: WritableSignal<Task> = signal<Task>({} as Task)
+	_node: WritableSignal<CheckBoxTreeNode> = signal<CheckBoxTreeNode>({} as CheckBoxTreeNode)
 
-	@Output() updateTask = new EventEmitter<{ completed: boolean; name: string }>()
+	@Output() childChecked = new EventEmitter<{ completed: boolean; name: string }>()
 
 	@Input()
-	set task(data: Task) {
-		this._task.set(data)
+	set node(data: CheckBoxTreeNode) {
+		this._node.set(data)
 	}
 
-	get task(): WritableSignal<Task> {
-		return this._task
+	get node(): WritableSignal<CheckBoxTreeNode> {
+		return this._node
+	}
+
+	get treeNodes(): CheckBoxTreeNode[] {
+		const node = this.node()
+		if (node.type === "leaf") return []
+		return node.childrens
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		const taskChanges = changes["task"]
-		const currentCompleted = (changes["task"].currentValue as Task).completed
+		const nodeChanges = changes["node"]
+		const currentCompleted = (changes["node"].currentValue as CheckBoxTreeNode).data.completed
 
-		if (!taskChanges.firstChange) this.update(currentCompleted)
+		if (!nodeChanges.firstChange) this.update(currentCompleted)
 	}
 
 	readonly partiallyComplete = computed(() => {
-		const task = this.task()
-		if (!task.subtasks) {
-			return false
-		}
-		return task.subtasks.some((t) => t.completed) && !task.subtasks.every((t) => t.completed)
+		const node = this.node()
+		if (node.type === "leaf" || node.type === "virtual" || !node.childrens) return false
+
+		return node.childrens.some((t) => t.data.completed) && !node.childrens.every((t) => t.data.completed)
 	})
 
-	onUpdateTask({ completed, name }: { completed: boolean; name: string }) {
+	// On child checkbox update, emit event to parent component. only for
+	onChildChecked({ completed, name }: { completed: boolean; name: string }) {
+		const node = this.node()
+
+		if (node.type === "virtual" || node.type === "leaf") return
+
 		this.update(
 			completed,
-			this.task().subtasks?.findIndex((t) => t.name === name)
+			node.childrens?.findIndex((t) => t.data.name === name)
 		)
 	}
 
 	update(completed: boolean, index?: number) {
-		this.task.update((task) => {
+		this.node.update((node) => {
+			// there are no need to update virtual or leaf node
+			if (node.type === "virtual" || node.type === "leaf") return node
+
+			// check parent checkbox
 			if (index === undefined) {
-				task.completed = completed
-				task.subtasks = task.subtasks?.map((data) => ({ ...data, completed }))
+				node.data.completed = completed
+
+				node.childrens = node.childrens?.map(({ data, ...rest }) => ({ ...rest, data: { ...data, completed } }))
+
+				// check children checkbox
 			} else {
-				task.subtasks![index].completed = completed
-				task.completed = task.subtasks?.every((t) => t.completed) ?? true
+				const completedChildren = node.childrens[index]
+				completedChildren.data.completed = completed
+				node.data.completed = node.childrens?.every((t) => t.data.completed) ?? true
 			}
 
-			this.updateTask.emit({ name: task.name, completed: task.completed })
+			this.childChecked.emit({ name: node.data.name, completed: node.data.completed })
 
-			return { ...task }
+			return { ...node }
 		})
 	}
 }

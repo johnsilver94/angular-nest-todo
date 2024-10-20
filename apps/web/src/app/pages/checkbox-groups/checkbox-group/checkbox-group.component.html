@@ -1,18 +1,18 @@
-@if (task().type !== "list") {
-	<div class="section-header" [ngClass]="{ task: task().type === 'task' }">
-		<mat-checkbox [checked]="task().completed" [indeterminate]="partiallyComplete()" (change)="update($event.checked)">
-			{{ task().name }}
+@if (node().type !== "virtual") {
+	<div class="section-header" [ngClass]="{ task: node().type === 'parent' }">
+		<mat-checkbox [checked]="node().data.completed" [indeterminate]="partiallyComplete()" (change)="update($event.checked)">
+			{{ node().data.name }}
 		</mat-checkbox>
 	</div>
 }
-<ul class="section-content" [ngClass]="{ list: task().type === 'list' }">
-	@for (subtask of task().subtasks; track subtask; let i = $index) {
-		@if (subtask.type === "subtask") {
-			<ant-checkbox-group [task]="subtask" (updateTask)="onUpdateTask($event)" />
+<ul class="section-content" [ngClass]="{ list: node().type === 'virtual' }">
+	@for (treeNode of treeNodes; track $index; let i = $index) {
+		@if (treeNode.type === "intermediate") {
+			<ant-checkbox-group [node]="treeNode" (childChecked)="onChildChecked($event)" />
 		} @else {
 			<li>
-				<mat-checkbox [checked]="subtask.completed" (change)="update($event.checked, i)">
-					{{ subtask.name }}
+				<mat-checkbox [checked]="treeNode.data.completed" (change)="update($event.checked, i)">
+					{{ treeNode.data.name }}
 				</mat-checkbox>
 			</li>
 		}
