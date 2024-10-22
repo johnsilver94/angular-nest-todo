@@ -21,6 +21,7 @@ export type Permission = Base & {
 export type PermissionCategory = Base & {
 	key: string
 	parent_key?: string // used for subcategories;
+	section_key?: string // added value; experimental;
 	name: string
 	description: string
 }

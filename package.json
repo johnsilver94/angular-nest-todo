@@ -8,7 +8,7 @@
 		"lint": "npx nx run-many --target=lint --fix --all"
 	},
 	"private": true,
-	"packageManager": "pnpm@9.11.0",
+	"packageManager": "pnpm@9.12.2+sha512.22721b3a11f81661ae1ec68ce1a7b879425a1ca5b991c975b074ac220b187ce56c708fe5db69f4c962c989452eee76c82877f4ee80f474cebd61ee13461b6228",
 	"dependencies": {
 		"@angular/animations": "~18.2.0",
 		"@angular/cdk": "^18.2.6",
@@ -66,6 +66,7 @@
 		"@swc-node/register": "~1.9.1",
 		"@swc/core": "~1.5.7",
 		"@swc/helpers": "~0.5.11",
+		"@types/eslint__js": "^8.42.3",
 		"@types/jest": "^29.5.12",
 		"@types/node": "~18.16.9",
 		"@types/sequelize": "^4.28.20",

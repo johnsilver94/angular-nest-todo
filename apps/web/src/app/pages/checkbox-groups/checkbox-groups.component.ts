@@ -3,6 +3,7 @@ import { FormsModule } from "@angular/forms"
 import { MatCheckboxModule } from "@angular/material/checkbox"
 import { PermissionsStore } from "./permissions.store"
 import { CheckboxGroupComponent } from "./checkbox-group/checkbox-group.component"
+import { arrayToTreeTest, getSections } from "./test"
 
 @Component({
 	selector: "ant-checkbox-groups",
@@ -15,4 +16,9 @@ import { CheckboxGroupComponent } from "./checkbox-group/checkbox-group.componen
 })
 export class CheckboxGroupsComponent {
 	readonly store = inject(PermissionsStore)
+
+	constructor() {
+		arrayToTreeTest()
+		getSections()
+	}
 }

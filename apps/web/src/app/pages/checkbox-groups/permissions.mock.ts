@@ -43,6 +43,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 	{
 		id: "1",
 		tenant_id: "1",
+		section_key: "1",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "underwriting-queue",
@@ -52,6 +53,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 	{
 		id: "2",
 		tenant_id: "1",
+		section_key: "1",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "case-view",
@@ -61,6 +63,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 	{
 		id: "3",
 		tenant_id: "1",
+		section_key: "2",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "manager-dashboard",
@@ -70,6 +73,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 	{
 		id: "4",
 		tenant_id: "1",
+		section_key: "3",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "user-groups",
@@ -80,6 +84,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 		id: "8",
 		parent_key: "4", // subcategory for User groups category
 		tenant_id: "1",
+		section_key: "3",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "view-capabilities",
@@ -90,6 +95,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 		id: "9",
 		parent_key: "4", // subcategory for User groups category
 		tenant_id: "1",
+		section_key: "3",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "edit-capabilities",
@@ -99,6 +105,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 	{
 		id: "5",
 		tenant_id: "1",
+		section_key: "3",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "users",
@@ -108,6 +115,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 	{
 		id: "6",
 		tenant_id: "1",
+		section_key: "4",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "alpha-sample-category-for-another-module",
@@ -117,6 +125,7 @@ export const permissionCategoryListMock: PermissionCategory[] = [
 	{
 		id: "7",
 		tenant_id: "1",
+		section_key: "4",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
 		key: "beta-sample-category-for-another-module",
@@ -321,6 +330,8 @@ export const permissionListMock: Permission[] = [
 		tenant_id: "1",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
+		category_key: undefined,
+		section_key: undefined,
 		name: "Orphan 1",
 		description: "Nullam sed sodales elit, non elementum quam. Fusce non metus.",
 		deleted_at: null
@@ -330,6 +341,8 @@ export const permissionListMock: Permission[] = [
 		tenant_id: "1",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
+		category_key: undefined,
+		section_key: undefined,
 		name: "Orphan 2",
 		description: "Proin sed molestie ante. Integer elementum erat et.",
 		deleted_at: null
@@ -339,6 +352,8 @@ export const permissionListMock: Permission[] = [
 		tenant_id: "1",
 		created_at: "2024-01-01",
 		updated_at: "2024-03-03",
+		category_key: undefined,
+		section_key: undefined,
 		name: "Orphan 3",
 		description: "Nam ut interdum metus. Sed.",
 		deleted_at: null
