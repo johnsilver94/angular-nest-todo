@@ -22,9 +22,7 @@ export default class Paginator<T extends Model> {
 			orderOptions = [[sortField, sortDirection]]
 		}
 
-		const totalCount = await this.model.count<T>({ where: whereOptions })
-
-		const results = await this.model.findAll<T>({
+		const { rows, count } = await this.model.findAndCountAll<T>({
 			where: whereOptions,
 			order: orderOptions,
 			offset: (pageNumber - 1) * pageSize,
@@ -32,12 +30,12 @@ export default class Paginator<T extends Model> {
 		})
 
 		return {
-			data: results,
+			data: rows,
 			pagination: {
 				pageNumber,
 				pageSize,
-				pagesCount: Math.ceil(totalCount / pageSize),
-				itemsCount: totalCount
+				pagesCount: Math.ceil(count / pageSize),
+				itemsCount: count
 			}
 		}
 	}

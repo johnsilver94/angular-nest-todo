@@ -65,7 +65,6 @@ export class CdkTableComponent implements OnInit {
 		// sort definition
 		this.sort.sort(this.initialSort)
 		// mat table definition
-		this.users = new MatTableDataSource()
 		this.users.filterPredicate = this.userQuery.createFilter()
 		this.users.paginator = this.paginator
 		this.users.sort = this.sort
