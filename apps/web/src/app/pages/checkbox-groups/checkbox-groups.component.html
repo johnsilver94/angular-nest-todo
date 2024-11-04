@@ -6,7 +6,7 @@
 	<div class="list">
 		@for (subtree of section.tree; track $index) {
 			<section class="section">
-				<ant-checkbox-group [node]="subtree" />
+				<ant-checkbox-group [group]="subtree" />
 			</section>
 		}
 	</div>

@@ -1,19 +1,10 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	computed,
-	EventEmitter,
-	Input,
-	Output,
-	signal,
-	SimpleChanges,
-	WritableSignal,
-	OnChanges
-} from "@angular/core"
+import { ChangeDetectionStrategy, Component, computed, model, output } from "@angular/core"
 import { FormsModule } from "@angular/forms"
 import { MatCheckboxModule } from "@angular/material/checkbox"
 import { CommonModule } from "@angular/common"
 import { CheckBoxTreeNode } from "../../../models/tree.model"
+
+type CheckBoxGroupUpdate = { completed: boolean; name: string }
 
 @Component({
 	selector: "ant-checkbox-group",
@@ -23,34 +14,19 @@ import { CheckBoxTreeNode } from "../../../models/tree.model"
 	styleUrl: "./checkbox-group.component.scss",
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckboxGroupComponent implements OnChanges {
-	_group: WritableSignal<CheckBoxTreeNode> = signal<CheckBoxTreeNode>({} as CheckBoxTreeNode)
+export class CheckboxGroupComponent {
+	group = model.required<CheckBoxTreeNode>()
 
-	@Output() childChecked = new EventEmitter<{ completed: boolean; name: string }>()
+	onGroupUpdate = output<CheckBoxGroupUpdate>({
+		alias: "onUpdate"
+	})
 
-	@Input()
-	set group(data: CheckBoxTreeNode) {
-		this._group.set(data)
-	}
-
-	get group(): WritableSignal<CheckBoxTreeNode> {
-		return this._group
-	}
-
-	get nodeChildrens(): CheckBoxTreeNode[] {
+	childrens = computed<CheckBoxTreeNode[]>(() => {
 		const group = this.group()
-		if (group.type === "leaf") return []
-		return group.childrens
-	}
+		return group.type === "leaf" ? [] : group.childrens
+	})
 
-	ngOnChanges(changes: SimpleChanges) {
-		const taskChanges = changes["group"]
-		const currentCompleted = (changes["group"].currentValue as CheckBoxTreeNode).data.completed
-
-		if (!taskChanges.firstChange) this.update(currentCompleted)
-	}
-
-	readonly partiallyComplete = computed(() => {
+	intermediate = computed<boolean>(() => {
 		const group = this.group()
 		if (group.type === "leaf" || group.type === "virtual" || !group.childrens) return false
 
@@ -58,11 +34,9 @@ export class CheckboxGroupComponent implements OnChanges {
 	})
 
 	// On child checkbox update, emit event to parent component. only for
-	onChildChecked({ completed, name }: { completed: boolean; name: string }) {
+	onChildUpdate({ completed, name }: CheckBoxGroupUpdate) {
 		const group = this.group()
-
 		if (group.type === "virtual" || group.type === "leaf") return
-
 		this.update(
 			completed,
 			group.childrens?.findIndex((t) => t.data.name === name)
@@ -70,26 +44,27 @@ export class CheckboxGroupComponent implements OnChanges {
 	}
 
 	update(completed: boolean, index?: number) {
-		this.group.update((group) => {
+		this.group.update((node) => {
 			// there are no need to update virtual or leaf node
-			if (group.type === "virtual" || group.type === "leaf") return group
+			if (node.type === "virtual" || node.type === "leaf") return node
 
 			// check parent checkbox
 			if (index === undefined) {
-				group.data.completed = completed
+				node.data.completed = completed
 
-				group.childrens = group.childrens?.map(({ data, ...rest }) => ({ ...rest, data: { ...data, completed } }))
+				// check all childrens
+				node.childrens = node.childrens?.map(({ data, ...rest }) => ({ ...rest, data: { ...data, completed } }))
 
 				// check children checkbox
 			} else {
-				const completedChildren = group.childrens[index]
+				const completedChildren = node.childrens[index]
 				completedChildren.data.completed = completed
-				group.data.completed = group.childrens?.every((t) => t.data.completed) ?? true
+				node.data.completed = node.childrens?.every((t) => t.data.completed) ?? true
 			}
 
-			this.childChecked.emit({ name: group.data.name, completed: group.data.completed })
+			this.onGroupUpdate.emit({ name: node.data.name, completed: node.data.completed })
 
-			return { ...group }
+			return { ...node }
 		})
 	}
 }

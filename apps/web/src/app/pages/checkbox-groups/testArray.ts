@@ -56,9 +56,9 @@ export const arrayToTreeTest = () => {
 
 	// console.table(permissionCategoryList)
 
-	// trees.forEach((tree) => {
-	// 	console.log("🚀 ~ trees.forEach ~ tree:", tree)
-	// })
+	trees.forEach((tree) => {
+		console.log("🚀 ~ trees.forEach ~ tree:", tree)
+	})
 
 	const sections = permissionSectionListMock.map(({ id, name, description }) => {
 		return {
@@ -85,7 +85,8 @@ export const arrayToTreeTest = () => {
 			}))
 	})
 
-	// console.table(sections)
+	console.table(sections)
+	console.log(sections)
 
 	console.timeEnd("arrayToTree time")
 	console.groupEnd()

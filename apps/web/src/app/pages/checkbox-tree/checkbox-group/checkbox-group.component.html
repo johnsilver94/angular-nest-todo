@@ -1,18 +1,18 @@
 @if (group().type !== "virtual") {
 	<div class="section-header" [ngClass]="{ task: group().type === 'parent' }">
-		<mat-checkbox [checked]="group().data.completed" [indeterminate]="partiallyComplete()" (change)="update($event.checked)">
+		<mat-checkbox [checked]="group().data.completed" [indeterminate]="intermediate()" (change)="update($event.checked)">
 			{{ group().data.name }}
 		</mat-checkbox>
 	</div>
 }
 <ul class="section-content" [ngClass]="{ list: group().type === 'virtual' }">
-	@for (treeNode of nodeChildrens; track $index; let i = $index) {
-		@if (treeNode.type === "intermediate") {
-			<ant-checkbox-group [group]="treeNode" (childChecked)="onChildChecked($event)" />
+	@for (child of childrens(); track $index; let i = $index) {
+		@if (child.type === "intermediate") {
+			<ant-checkbox-group [group]="child" (onUpdate)="onChildUpdate($event)" />
 		} @else {
 			<li>
-				<mat-checkbox [checked]="treeNode.data.completed" (change)="update($event.checked, i)">
-					{{ treeNode.data.name }}
+				<mat-checkbox [checked]="child.data.completed" (change)="update($event.checked, i)">
+					{{ child.data.name }}
 				</mat-checkbox>
 			</li>
 		}
