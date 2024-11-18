@@ -9,10 +9,9 @@ describe("AppComponent", () => {
 		}).compileComponents()
 	})
 
-	it("should render", () => {
+	it("should create the app", () => {
 		const fixture = TestBed.createComponent(AppComponent)
-		fixture.detectChanges()
-		const compiled = fixture.nativeElement as HTMLElement
-		expect(compiled.querySelector("nav")?.textContent).toContain("Home")
+		const app = fixture.componentInstance
+		expect(app).toBeTruthy()
 	})
 })

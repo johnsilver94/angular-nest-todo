@@ -1,0 +1,22 @@
+<div class="flex flex-col w-full h-screen">
+	<nav class="bg-gray-800">
+		<div class="container mx-auto px-4 py-2 flex justify-between items-center">
+			<div class="flex items-center">
+				<a href="/" class="text-white font-bold text-xl">Todo app</a>
+			</div>
+			<div class="hidden md:flex items-center space-x-4">
+				@for (route of routes; track $index) {
+					<a [href]="route.path" class="text-gray-300 hover:text-white px-3 py-2 rounded-md">{{ route.name }}</a>
+				}
+			</div>
+		</div>
+	</nav>
+	<main class="flex flex-col flex-1 container mx-auto px-4 py-8">
+		<router-outlet></router-outlet>
+	</main>
+	<footer class="bg-gray-800 text-white py-4">
+		<div class="container mx-auto px-4">
+			<p>&copy; 2023 My Todo App</p>
+		</div>
+	</footer>
+</div>

@@ -8,15 +8,24 @@ import { CRUDTodoComponent } from "./pages/crud-todo/crud-todo.component"
 import { NGRXEntitiesTodoComponent } from "./pages/ngrx-entities/ngrx-entities.component"
 import { CheckboxGroupsComponent } from "./pages/checkbox-groups/checkbox-groups.component"
 import { CheckboxTreeComponent } from "./pages/checkbox-tree/checkbox-tree.component"
+import { LayoutComponent } from "./components/layout/layout.component"
+import { HomeComponent } from "./pages/home/home.component"
 
 export const routes: Routes = [
-	{ path: "material", component: MaterialTableComponent },
-	{ path: "cdk", component: CdkTableComponent },
-	{ path: "todos", component: TodoTableComponent },
-	{ path: "elf-todos", component: ElfTodosComponent },
-	{ path: "ngrx-todos", component: NgrxTodosComponent },
-	{ path: "crud-todo", component: CRUDTodoComponent },
-	{ path: "ngrx-entities", component: NGRXEntitiesTodoComponent },
-	{ path: "checkbox-groups", component: CheckboxGroupsComponent },
-	{ path: "checkbox-tree", component: CheckboxTreeComponent }
+	{
+		path: "",
+		component: LayoutComponent,
+		children: [
+			{ path: "", component: HomeComponent, pathMatch: "full" },
+			{ path: "material", component: MaterialTableComponent },
+			{ path: "cdk", component: CdkTableComponent },
+			{ path: "todos", component: TodoTableComponent },
+			{ path: "elf-todos", component: ElfTodosComponent },
+			{ path: "ngrx-todos", component: NgrxTodosComponent },
+			{ path: "crud-todo", component: CRUDTodoComponent },
+			{ path: "ngrx-entities", component: NGRXEntitiesTodoComponent },
+			{ path: "checkbox-groups", component: CheckboxGroupsComponent },
+			{ path: "checkbox-tree", component: CheckboxTreeComponent }
+		]
+	}
 ]
