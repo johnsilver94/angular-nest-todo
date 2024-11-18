@@ -26,6 +26,7 @@
 		"hstore",
 		"nestjs",
 		"ngneat",
-		"ngrx"
+		"ngrx",
+		"nrwl"
 	]
 }
