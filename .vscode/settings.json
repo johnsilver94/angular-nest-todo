@@ -23,11 +23,13 @@
 		}
 	],
 	"cSpell.words": [
+		"Buildable",
 		"Datasource",
 		"hstore",
 		"nestjs",
 		"ngneat",
 		"ngrx",
-		"nrwl"
+		"nrwl",
+		"tseslint"
 	]
 }
