@@ -102,7 +102,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 
 	removeTodo(todo: Todo) {
 		this.paginator.pageIndex = 0
-		this.todosService.deleteTodo(todo.id).subscribe((res) => {
+		this.todosService.deleteTodo(todo.id).subscribe(() => {
 			// if (res.data?.success) this.getTodosPaginated()
 		})
 	}

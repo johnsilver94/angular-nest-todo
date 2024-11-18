@@ -9,6 +9,7 @@ export type Permission = Base & {
 	type?: string // permission details for opa
 	resource?: string // permission details for opa
 	action?: string // permission details for opa
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	condition?: any // permission details for opa
 	module_key?: string
 	category_key?: string

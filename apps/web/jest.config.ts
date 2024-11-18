@@ -1,6 +1,4 @@
-import type { Config } from "@jest/types"
-
-const config: Config.InitialOptions = {
+export default {
 	displayName: "web",
 	preset: "../../jest.preset.js",
 	setupFilesAfterEnv: ["<rootDir>/src/test-setup.ts"],
@@ -22,5 +20,3 @@ const config: Config.InitialOptions = {
 		"jest-preset-angular/build/serializers/html-comment"
 	]
 }
-
-export default config

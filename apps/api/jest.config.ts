@@ -7,5 +7,11 @@ export default {
 	},
 	moduleFileExtensions: ["ts", "js", "html"],
 	coverageDirectory: "../../coverage/apps/api",
-	collectCoverageFrom: ["src/**/*.{!(module|config),}.(t|j)s", "!**/node_modules/**", "!**/vendor/**"]
+	collectCoverageFrom: [
+		"src/**/*.{!(module|config|dto|model),}.(t|j)s",
+		"!src/app/todos/**/*",
+		"!src/app/paginator/**/*",
+		"!**/node_modules/**",
+		"!**/vendor/**"
+	]
 }
