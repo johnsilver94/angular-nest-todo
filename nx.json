@@ -59,7 +59,11 @@
     },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"]
-    }
+    },
+    "lint": {
+			"cache": true,
+			"dependsOn": ["^build"]
+		}
   },
   "generators": {
     "@nx/angular:application": {
