@@ -17,11 +17,11 @@ export class CheckboxTreeComponent {
 		{
 			type: "parent",
 			data: { name: "Task 1", completed: false },
-			childrens: [
+			children: [
 				{
 					type: "intermediate",
 					data: { name: "Task 1.1", completed: false },
-					childrens: [
+					children: [
 						{
 							type: "leaf",
 							data: { name: "Task 1.1.1", completed: true }
@@ -39,11 +39,11 @@ export class CheckboxTreeComponent {
 				{
 					type: "intermediate",
 					data: { name: "Task 1.2", completed: false },
-					childrens: [
+					children: [
 						{
 							type: "intermediate",
 							data: { name: "Task 1.2.1", completed: false },
-							childrens: [
+							children: [
 								{
 									type: "leaf",
 									data: { name: "Task 1.2.1.1", completed: false }
@@ -57,7 +57,7 @@ export class CheckboxTreeComponent {
 						{
 							type: "intermediate",
 							data: { name: "Task 1.2.2", completed: false },
-							childrens: [
+							children: [
 								{
 									type: "leaf",
 									data: { name: "Task 1.2.2.1", completed: false }
@@ -77,7 +77,7 @@ export class CheckboxTreeComponent {
 		{
 			type: "virtual",
 			data: { name: "Task 2", completed: false },
-			childrens: [
+			children: [
 				{ type: "leaf", data: { name: "Task 2.1", completed: false } },
 				{ type: "leaf", data: { name: "Task 2.2", completed: false } },
 				{ type: "leaf", data: { name: "Task 2.3", completed: false } }
@@ -86,28 +86,28 @@ export class CheckboxTreeComponent {
 		{
 			type: "parent",
 			data: { name: "Task 3", completed: false },
-			childrens: [
+			children: [
 				{
 					type: "intermediate",
 					data: { name: "Task 3.1", completed: false },
-					childrens: [
+					children: [
 						{
 							type: "intermediate",
 							data: {
 								name: "Task 3.1.1",
 								completed: false
 							},
-							childrens: [
+							children: [
 								{
 									type: "intermediate",
 									data: { name: "Task 3.1.1.1", completed: false },
-									childrens: [
+									children: [
 										{ type: "leaf", data: { name: "Task 3.1.1.1.1", completed: false } },
 										{ type: "leaf", data: { name: "Task 3.1.1.1.2", completed: false } },
 										{
 											type: "intermediate",
 											data: { name: "Task 3.1.1.1.3", completed: false },
-											childrens: [
+											children: [
 												{
 													type: "leaf",
 													data: { name: "Task 3.1.1.1.3.1", completed: false }

@@ -38,34 +38,34 @@ export const PermissionsStore = signalStore(
 						subcategories_tree = buildCategoriesTree(permissions, categories, subcategories)
 					}
 
-					const leaf_childrens: CheckBoxTreeNode[] = category_permissions.map(({ name, id }) => ({
+					const leaf_children: CheckBoxTreeNode[] = category_permissions.map(({ name, id }) => ({
 						type: "leaf",
 						data: { name, completed: checkedPermissions().includes(id) }
 					}))
 
-					const childrens = [...subcategories_tree, ...leaf_childrens]
+					const children = [...subcategories_tree, ...leaf_children]
 
 					return {
 						type: firstLevel ? "parent" : "intermediate",
-						data: { name: category.name, completed: childrens.every((child) => child.data.completed) },
-						childrens
+						data: { name: category.name, completed: children.every((child) => child.data.completed) },
+						children
 					}
 				})
 			}
 
 			const getSectionCategoriesIds = (ids: string[]): string[] => {
 				let res_ids: string[] = []
-				const itermediate_ids = categoryEntities()
+				const intermediate_ids = categoryEntities()
 					.filter(({ id }) => ids.includes(id))
 					.map(({ parent_key }) => parent_key)
 					.filter((cat) => cat !== undefined)
 
-				if (itermediate_ids.length) {
-					const parent_ids = getSectionCategoriesIds(itermediate_ids)
+				if (intermediate_ids.length) {
+					const parent_ids = getSectionCategoriesIds(intermediate_ids)
 					if (parent_ids.length) {
-						res_ids = [...parent_ids, ...itermediate_ids]
+						res_ids = [...parent_ids, ...intermediate_ids]
 					}
-					res_ids = [...itermediate_ids]
+					res_ids = [...intermediate_ids]
 				}
 
 				return [...new Set(res_ids)]
@@ -94,15 +94,15 @@ export const PermissionsStore = signalStore(
 				}
 			})
 
-			// add orphane permissions to "Others" section
+			// add orphan permissions to "Others" section
 			sections.push({
 				name: "Others",
-				description: "Virtual section for orphane permissions.",
+				description: "Virtual section for orphan permissions.",
 				tree: [
 					{
 						type: "virtual",
 						data: { name: "Virtual node", completed: false },
-						childrens: permissionEntities()
+						children: permissionEntities()
 							.filter((permission) => !permission.section_key && !permission.category_key)
 							.map(({ id, name }) => ({
 								type: "leaf",

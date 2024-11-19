@@ -21,16 +21,16 @@ export class CheckboxGroupComponent {
 		alias: "onUpdate"
 	})
 
-	childrens = computed<CheckBoxTreeNode[]>(() => {
+	children = computed<CheckBoxTreeNode[]>(() => {
 		const group = this.group()
-		return group.type === "leaf" ? [] : group.childrens
+		return group.type === "leaf" ? [] : group.children
 	})
 
 	intermediate = computed<boolean>(() => {
 		const group = this.group()
-		if (group.type === "leaf" || group.type === "virtual" || !group.childrens) return false
+		if (group.type === "leaf" || group.type === "virtual" || !group.children) return false
 
-		return group.childrens.some((t) => t.data.completed) && !group.childrens.every((t) => t.data.completed)
+		return group.children.some((t) => t.data.completed) && !group.children.every((t) => t.data.completed)
 	})
 
 	// On child checkbox update, emit event to parent component. only for
@@ -39,7 +39,7 @@ export class CheckboxGroupComponent {
 		if (group.type === "virtual" || group.type === "leaf") return
 		this.update(
 			completed,
-			group.childrens?.findIndex((t) => t.data.name === name)
+			group.children?.findIndex((t) => t.data.name === name)
 		)
 	}
 
@@ -52,14 +52,14 @@ export class CheckboxGroupComponent {
 			if (index === undefined) {
 				node.data.completed = completed
 
-				// check all childrens
-				node.childrens = node.childrens?.map(({ data, ...rest }) => ({ ...rest, data: { ...data, completed } }))
+				// check all children
+				node.children = node.children?.map(({ data, ...rest }) => ({ ...rest, data: { ...data, completed } }))
 
 				// check children checkbox
 			} else {
-				const completedChildren = node.childrens[index]
+				const completedChildren = node.children[index]
 				completedChildren.data.completed = completed
-				node.data.completed = node.childrens?.every((t) => t.data.completed) ?? true
+				node.data.completed = node.children?.every((t) => t.data.completed) ?? true
 			}
 
 			this.onGroupUpdate.emit({ name: node.data.name, completed: node.data.completed })
