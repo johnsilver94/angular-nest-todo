@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, inject } from "@angular/core"
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, effect, inject } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { MatSort, MatSortModule } from "@angular/material/sort"
 import { MatTableModule } from "@angular/material/table"
@@ -17,6 +17,8 @@ import { MatFormFieldModule } from "@angular/material/form-field"
 import { MatButtonModule } from "@angular/material/button"
 import { MatMenuModule } from "@angular/material/menu"
 import { TodosStore } from "./ngrx-todos.store"
+import { ViewTodoComponent } from "./view-todo/view-todo.component"
+import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.component"
 
 @Component({
 	selector: "ant-ngrx-todos",
@@ -34,7 +36,9 @@ import { TodosStore } from "./ngrx-todos.store"
 		MatFormFieldModule,
 		MatButtonModule,
 		MatIconModule,
-		MatMenuModule
+		MatMenuModule,
+		ViewTodoComponent,
+		CreateEditTodoComponent
 	],
 	templateUrl: "./ngrx-todos.component.html",
 	styleUrl: "./ngrx-todos.component.scss",
@@ -47,14 +51,23 @@ export class NgrxTodosComponent implements AfterViewInit {
 	queryForm: FormGroup
 	displayedColumns = ["id", "title", "description", "completed", "actions"]
 
+	isOpened = false
+	selectedTodo?: Todo = undefined
+
 	@ViewChild("paginator", { static: true })
 	// @ts-expect-error
 	paginator: MatPaginator
 	// @ts-expect-error
 	@ViewChild(MatSort) sort: MatSort
 
+	@ViewChild(ViewTodoComponent) viewModal!: ViewTodoComponent
+	@ViewChild(CreateEditTodoComponent) createEditModal!: CreateEditTodoComponent
+
 	constructor(private todosService: TodosService) {
 		this.queryForm = this.createQueryForm()
+		effect(() => {
+			console.log("🚀 ~ NgrxTodosComponent ~ isOpened:", this.isOpened)
+		})
 	}
 
 	ngInit(): void {
@@ -108,7 +121,16 @@ export class NgrxTodosComponent implements AfterViewInit {
 		})
 	}
 
+	viewTodo(todo: Todo) {
+		console.log("🚀 ~ TodoTableComponent ~ todo:", todo)
+		this.selectedTodo = todo
+		this.viewModal.open.set(true)
+	}
+
 	editTodo(todo: Todo) {
 		console.log("🚀 ~ TodoTableComponent ~ todo:", todo)
+		this.selectedTodo = todo
+		this.createEditModal.mode.set("edit")
+		this.createEditModal.open.set(true)
 	}
 }

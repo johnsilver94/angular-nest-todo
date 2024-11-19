@@ -1,18 +1,25 @@
-<form [formGroup]="queryForm">
-	<mat-form-field>
-		<mat-label>Filter</mat-label>
-		<input matInput formControlName="title" placeholder="Search" #input />
-		<button
-			type="button"
-			mat-icon-button
-			matSuffix
-			(click)="clearFilters()"
-			[attr.aria-label]="'Clear filters'"
-			title="Clear filters">
-			<span class="material-symbols-outlined">close</span>
-		</button>
-	</mat-form-field>
-</form>
+<div class="flex gap-6 w-full">
+	<form [formGroup]="queryForm" class="w-full">
+		<mat-form-field>
+			<mat-label>Filter</mat-label>
+			<input matInput formControlName="title" placeholder="Search" #input />
+			<button
+				type="button"
+				mat-icon-button
+				matSuffix
+				(click)="clearFilters()"
+				[attr.aria-label]="'Clear filters'"
+				title="Clear filters">
+				<span class="material-symbols-outlined">close</span>
+			</button>
+		</mat-form-field>
+	</form>
+	<button
+		class="w-48 h-14 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 flex gap-1 items-center justify-center rounded-2xl">
+		<span class="material-symbols-outlined">add</span>
+		Add Todo
+	</button>
+</div>
 
 <div class="mat-elevation-z8">
 	<table mat-table [dataSource]="store.todosDatasource()" matSort>
@@ -24,6 +31,10 @@
 						<span class="material-symbols-outlined">more_vert</span>
 					</button>
 					<mat-menu #menu="matMenu">
+						<button class="menu-item" mat-menu-item (click)="viewTodo(element)">
+							<span class="material-symbols-outlined">arrow_forward</span>
+							<span>View</span>
+						</button>
 						<button class="menu-item" mat-menu-item (click)="editTodo(element)">
 							<span class="material-symbols-outlined">edit</span>
 							<span>Edit</span>
@@ -51,3 +62,6 @@
 		showFirstLastButtons
 		aria-label="Select page of todos table" />
 </div>
+
+<ant-view-todo [todo]="selectedTodo" />
+<ant-create-edit-todo [todo]="selectedTodo" />
