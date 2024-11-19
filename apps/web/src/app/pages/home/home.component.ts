@@ -12,7 +12,6 @@ export class HomeComponent {
 		{ name: "CDK Table", route: "/cdk" },
 		{ name: "Material Table", route: "/material" },
 		{ name: "Todos Table", route: "/todos" },
-		{ name: "Elf Todos", route: "/elf-todos" },
 		{ name: "Ngrx Todos", route: "/ngrx-todos" },
 		{ name: "CRUD Todos", route: "/crud-todo" },
 		{ name: "NGRX Entities", route: "/ngrx-entities" },

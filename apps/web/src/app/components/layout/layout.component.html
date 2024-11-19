@@ -6,7 +6,32 @@
 			</div>
 			<div class="hidden md:flex items-center space-x-4">
 				@for (route of routes; track $index) {
-					<a [href]="route.path" class="text-gray-300 hover:text-white px-3 py-2 rounded-md">{{ route.name }}</a>
+					@if (!route.subRoutes || route.subRoutes.length === 0) {
+						<a [href]="route.path" class="text-gray-300 hover:text-white px-3 py-2 rounded-md">{{ route.name }}</a>
+					} @else {
+						<div class="relative group">
+							<button
+								class="text-gray-300 hover:text-white px-3 py-2 rounded-md"
+								type="button"
+								id="menu-button-{{ route.name }}"
+								aria-expanded="true"
+								aria-haspopup="true">
+								{{ route.name }}
+							</button>
+							<div
+								class="absolute hidden group-focus-within:block bg-gray-800 text-white w-48 py-2 mt-1 z-10 rounded-md shadow-lg focus:outline-none"
+								role="menu"
+								aria-orientation="vertical"
+								attr.aria-labelledby="menu-button-{{ route.name }}"
+								tabindex="-1">
+								@for (subRoute of route.subRoutes; track $index) {
+									<a [href]="subRoute.path" class="block px-4 py-2 hover:bg-gray-700 z-10" role="menuitem" tabindex="-1">
+										{{ subRoute.name }}
+									</a>
+								}
+							</div>
+						</div>
+					}
 				}
 			</div>
 		</div>
