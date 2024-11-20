@@ -2,14 +2,14 @@
 type ParentNode<TData = unknown> = {
 	data: TData
 	type: "parent"
-	childrens: TreeNode<TData>[]
+	children: TreeNode<TData>[]
 }
 
 // Intermediate node in tree.
 type ChildNode<TData = unknown> = {
 	data: TData
 	type: "intermediate"
-	childrens: TreeNode<TData>[]
+	children: TreeNode<TData>[]
 }
 
 // Last node in tree is a leaf node.
@@ -22,7 +22,7 @@ type LeafNode<TData = unknown> = {
 type VirtualNode<TData = unknown> = {
 	data: TData
 	type: "virtual"
-	childrens: TreeNode<TData>[]
+	children: TreeNode<TData>[]
 }
 
 export type TreeNode<TData = unknown> = ParentNode<TData> | ChildNode<TData> | LeafNode<TData> | VirtualNode<TData>

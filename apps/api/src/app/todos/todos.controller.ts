@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common"
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from "@nestjs/common"
 import { TodosService } from "./todos.service"
 import { CreateTodoDto } from "./dto/create-todo.dto"
 import { Todo } from "./todo.model"
@@ -15,6 +15,7 @@ export class TodosController {
 	}
 
 	@Post("paginated")
+	@HttpCode(200)
 	getTodosPaginated(@Body() query: PaginationQueryDto) {
 		return this.todosService.findAllPaginated(query)
 	}
