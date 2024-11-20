@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing"
 
-import { CreateEditTodoComponent } from './create-edit-todo.component';
+import { CreateEditTodoComponent } from "./create-edit-todo.component"
 
-describe('CreateEditTodoComponent', () => {
-  let component: CreateEditTodoComponent;
-  let fixture: ComponentFixture<CreateEditTodoComponent>;
+describe("CreateEditTodoComponent", () => {
+	let component: CreateEditTodoComponent
+	let fixture: ComponentFixture<CreateEditTodoComponent>
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CreateEditTodoComponent]
-    })
-    .compileComponents();
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [CreateEditTodoComponent]
+		}).compileComponents()
 
-    fixture = TestBed.createComponent(CreateEditTodoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		fixture = TestBed.createComponent(CreateEditTodoComponent)
+		component = fixture.componentInstance
+		fixture.detectChanges()
+	})
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+	it("should create", () => {
+		expect(component).toBeTruthy()
+	})
+})
