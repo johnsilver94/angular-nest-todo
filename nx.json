@@ -18,29 +18,14 @@
 		],
 		"sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
 	},
-	"nxCloudId": "66f7001d648b69537dc03211",
+	"nxCloudId": "673e23897076d3dcf750119a",
 	"plugins": [
 		{
 			"plugin": "@nx/webpack/plugin",
-			"options": {
-				"buildTargetName": "build",
-				"serveTargetName": "serve",
-				"previewTargetName": "preview"
-			}
+			"options": { "buildTargetName": "build", "serveTargetName": "serve", "previewTargetName": "preview" }
 		},
-		{
-			"plugin": "@nx/eslint/plugin",
-			"options": {
-				"targetName": "lint"
-			}
-		},
-		{
-			"plugin": "@nx/jest/plugin",
-			"options": {
-				"targetName": "test"
-			},
-			"exclude": ["apps/api-e2e/**/*"]
-		},
+		{ "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
+		{ "plugin": "@nx/jest/plugin", "options": { "targetName": "test" }, "exclude": ["apps/api-e2e/**/*"] },
 		{
 			"plugin": "@nx/cypress/plugin",
 			"options": {
@@ -57,26 +42,11 @@
 			"dependsOn": ["^build"],
 			"inputs": ["production", "^production"]
 		},
-		"e2e-ci--**/*": {
-			"dependsOn": ["^build"]
-		},
-		"lint": {
-			"cache": true
-		},
-		"test": {
-			"cache": true,
-			"dependsOn": ["^build"]
-		}
+		"e2e-ci--**/*": { "dependsOn": ["^build"] },
+		"lint": { "cache": true },
+		"test": { "cache": true, "dependsOn": ["^build"] }
 	},
 	"generators": {
-		"@nx/angular:application": {
-			"e2eTestRunner": "cypress",
-			"linter": "eslint",
-			"style": "scss",
-			"unitTestRunner": "jest"
-		},
-		"@nx/angular:component": {
-			"style": "scss"
-		}
+		"@nx/angular:application": { "e2eTestRunner": "cypress", "linter": "eslint", "style": "scss", "unitTestRunner": "jest" }
 	}
 }
