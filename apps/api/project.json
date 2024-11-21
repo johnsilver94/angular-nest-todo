@@ -1,10 +1,10 @@
 {
-  "name": "api",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/api/src",
-  "projectType": "application",
-  "tags": [],
-  "targets": {
+	"name": "api",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/api/src",
+	"projectType": "application",
+	"tags": [],
+	"targets": {
 		"serve": {
 			"executor": "@nx/js:node",
 			"defaultConfiguration": "development",
