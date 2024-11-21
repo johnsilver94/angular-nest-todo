@@ -1,14 +1,16 @@
 {
 	"files.autoSave": "onFocusChange",
 	"editor.codeActionsOnSave": {
-		"source.fixAll.stylelint": "explicit",
-		"source.fixAll.eslint": "explicit",
-		"source.fixAll.tslint": "explicit"
+		"source.fixAll": "explicit",
+		"source.organizeImports": "explicit"
 	},
-	"[javascript, javascriptreact, typescript, typescriptreact, json, jsonc, graphql]": {
+	"[javascript,javascriptreact, typescript, typescriptreact, json,jsonc, graphql]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
 	},
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modificationsIfAvailable",
 	"css.validate": false,
 	"less.validate": false,
 	"scss.validate": false,
@@ -22,14 +24,5 @@
 			"mode": "auto"
 		}
 	],
-	"cSpell.words": [
-		"Buildable",
-		"Datasource",
-		"hstore",
-		"nestjs",
-		"ngneat",
-		"ngrx",
-		"nrwl",
-		"tseslint"
-	]
+	"cSpell.words": ["Buildable", "Datasource", "hstore", "nestjs", "ngneat", "ngrx", "nrwl", "tseslint"]
 }
