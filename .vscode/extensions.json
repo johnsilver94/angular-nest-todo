@@ -1,3 +1,14 @@
 {
-	"recommendations": ["nrwl.angular-console", "esbenp.prettier-vscode", "firsttris.vscode-jest-runner"]
+	"recommendations": [
+		"nrwl.angular-console",
+		"esbenp.prettier-vscode",
+		"aaron-bond.better-comments",
+		"streetsidesoftware.code-spell-checker",
+		"vivaxy.vscode-conventional-commits",
+		"editorconfig.editorconfig",
+		"dbaeumer.vscode-eslint",
+		"orta.vscode-jest",
+		"stylelint.vscode-stylelint",
+		"chakrounanas.turbo-console-log"
+	]
 }

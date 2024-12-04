@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { CommonModule } from "@angular/common"
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, effect, inject } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { MatButtonModule } from "@angular/material/button"
+import { MatFormFieldModule } from "@angular/material/form-field"
+import { MatIconModule } from "@angular/material/icon"
+import { MatInputModule } from "@angular/material/input"
+import { MatMenuModule } from "@angular/material/menu"
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
+import { MatProgressBarModule } from "@angular/material/progress-bar"
+import { MatSelectModule } from "@angular/material/select"
 import { MatSort, MatSortModule } from "@angular/material/sort"
 import { MatTableModule } from "@angular/material/table"
-import { MatProgressBarModule } from "@angular/material/progress-bar"
 import { ROW_ANIMATION } from "../../../animations/row.animation"
+import { SortDirection } from "../../../models/pagination.model"
 import { Todo } from "../../../models/todo.model"
 import { TodosService } from "../../../services/todos.service"
-import { CommonModule } from "@angular/common"
-import { MatInputModule } from "@angular/material/input"
-import { MatSelectModule } from "@angular/material/select"
-import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
-import { MatIconModule } from "@angular/material/icon"
-import { SortDirection } from "../../../models/pagination.model"
-import { MatFormFieldModule } from "@angular/material/form-field"
-import { MatButtonModule } from "@angular/material/button"
-import { MatMenuModule } from "@angular/material/menu"
+import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.component"
 import { TodosStore } from "./ngrx-todos.store"
 import { ViewTodoComponent } from "./view-todo/view-todo.component"
-import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.component"
 
 @Component({
 	selector: "ant-ngrx-todos",
@@ -47,7 +47,9 @@ import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.com
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgrxTodosComponent implements AfterViewInit {
-	readonly store = inject(TodosStore)
+	store = inject(TodosStore)
+
+	readonly todosDatasource = this.store.todosDatasource
 	queryForm: FormGroup
 	displayedColumns = ["id", "title", "description", "completed", "actions"]
 
