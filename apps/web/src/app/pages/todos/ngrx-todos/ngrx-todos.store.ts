@@ -10,14 +10,12 @@ import { TodosService } from "../../../services/todos.service"
 
 type TodosState = {
 	todos: Paginated<Todo>
-	// todosDatasource: MatTableDataSource<Todo>
 	isLoading: boolean
 	query: QueryOptions
 }
 
 const initialState: TodosState = {
 	todos: { data: [], pagination: { pageNumber: 1, pageSize: 10, pagesCount: 0, itemsCount: 0 } },
-	// todosDatasource: new MatTableDataSource<Todo>(),
 	query: {
 		pageNumber: 1,
 		pageSize: 10,

@@ -59,15 +59,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	displayedColumns = ["id", "title", "createdAt", "updatedAt", "completed", "actions"]
 
 	isOpened = false
-	selectedTodo?: Todo = {
-		id: 19,
-		title: "Reply to Emails",
-		description:
-			"Allocate an hour to go through the inbox, responding to urgent emails and sorting others for follow-up later in the week.",
-		completed: true,
-		createdAt: "2024-10-07T19:53:46.112Z",
-		updatedAt: "2024-10-07T19:54:01.713Z"
-	}
+	selectedTodo?: Todo
 
 	@ViewChild("paginator", { static: true })
 	// @ts-expect-error
