@@ -17,7 +17,7 @@ import { SortDirection } from "../../../models/pagination.model"
 import { Todo } from "../../../models/todo.model"
 import { TodosService } from "../../../services/todos.service"
 import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.component"
-import { TodosStore } from "./ngrx-todos.store"
+import { TodosStore } from "./store/ngrx-todos.store"
 import { ViewTodoComponent } from "./view-todo/view-todo.component"
 
 @Component({
@@ -53,7 +53,8 @@ export class NgrxTodosComponent implements AfterViewInit {
 	readonly isLoading = this.store.isLoading
 	readonly paginationLength = this.store.todos.pagination.itemsCount
 	readonly query = this.store.query
-	readonly getTodosQuery = this.store.getTodosQuery
+	readonly getTodosByQuery = this.store.getTodosByQuery
+	readonly deleteTodo = this.store.deleteTodo
 
 	queryForm: FormGroup
 	displayedColumns = ["id", "title", "createdAt", "updatedAt", "completed", "actions"]
@@ -78,7 +79,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	ngInit(): void {
-		this.getTodosQuery(this.query)
+		this.getTodosByQuery(this.query)
 	}
 
 	ngAfterViewInit(): void {
@@ -121,9 +122,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 
 	removeTodo(todo: Todo) {
 		this.paginator.pageIndex = 0
-		this.todosService.deleteTodo(todo.id).subscribe(() => {
-			// if (res.data?.success) this.getTodosPaginated()
-		})
+		this.deleteTodo(todo.id)
 	}
 
 	viewTodo(todo: Todo) {

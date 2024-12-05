@@ -1,7 +1,8 @@
 import { CommonModule } from "@angular/common"
-import { Component, effect, input, signal } from "@angular/core"
+import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from "@angular/core"
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { Todo } from "../../../../models/todo.model"
+import { TodosStore } from "../store/ngrx-todos.store"
 
 type Mode = "create" | "edit"
 type TodoForm = {
@@ -18,12 +19,19 @@ type TodoForm = {
 	standalone: true,
 	imports: [CommonModule, ReactiveFormsModule],
 	templateUrl: "./create-edit-todo.component.html",
-	styleUrl: "./create-edit-todo.component.scss"
+	styleUrl: "./create-edit-todo.component.scss",
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateEditTodoComponent {
+	readonly store = inject(TodosStore)
+
 	todo = input<Todo>()
 	open = signal<boolean>(false)
 	mode = signal<Mode>("edit")
+
+	readonly isLoading = this.store.isLoading
+	readonly addTodo = this.store.addTodo
+	readonly updateTodo = this.store.updateTodo
 
 	todoForm: FormGroup<TodoForm> = new FormGroup({
 		title: new FormControl<string>("", { nonNullable: true, validators: [Validators.required] }),
@@ -77,11 +85,21 @@ export class CreateEditTodoComponent {
 	}
 
 	createOrEditSubmit() {
-		if (!this.todoForm.valid) {
+		const todo = this.todo()
+
+		if (!this.todoForm.valid || todo === undefined) {
 			return
 		}
 
-		console.log(this.todoForm.value)
+		console.log("createOrEditSubmit:", this.todoForm.value)
+
+		const todoData = this.todoForm.value as Omit<Todo, "id">
+
+		if (this.mode() === "create") {
+			this.addTodo(todoData)
+		} else {
+			this.updateTodo({ id: todo.id, ...todoData })
+		}
 
 		this.closeModal()
 	}
