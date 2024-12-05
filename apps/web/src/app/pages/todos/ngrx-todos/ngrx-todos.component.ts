@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { CommonModule } from "@angular/common"
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, effect, inject } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { MatButtonModule } from "@angular/material/button"
+import { MatFormFieldModule } from "@angular/material/form-field"
+import { MatIconModule } from "@angular/material/icon"
+import { MatInputModule } from "@angular/material/input"
+import { MatMenuModule } from "@angular/material/menu"
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
+import { MatProgressBarModule } from "@angular/material/progress-bar"
+import { MatSelectModule } from "@angular/material/select"
 import { MatSort, MatSortModule } from "@angular/material/sort"
 import { MatTableModule } from "@angular/material/table"
-import { MatProgressBarModule } from "@angular/material/progress-bar"
 import { ROW_ANIMATION } from "../../../animations/row.animation"
+import { SortDirection } from "../../../models/pagination.model"
 import { Todo } from "../../../models/todo.model"
 import { TodosService } from "../../../services/todos.service"
-import { CommonModule } from "@angular/common"
-import { MatInputModule } from "@angular/material/input"
-import { MatSelectModule } from "@angular/material/select"
-import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
-import { MatIconModule } from "@angular/material/icon"
-import { SortDirection } from "../../../models/pagination.model"
-import { MatFormFieldModule } from "@angular/material/form-field"
-import { MatButtonModule } from "@angular/material/button"
-import { MatMenuModule } from "@angular/material/menu"
-import { TodosStore } from "./ngrx-todos.store"
-import { ViewTodoComponent } from "./view-todo/view-todo.component"
 import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.component"
+import { TodosStore } from "./store/ngrx-todos.store"
+import { ViewTodoComponent } from "./view-todo/view-todo.component"
 
 @Component({
 	selector: "ant-ngrx-todos",
@@ -48,11 +48,19 @@ import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.com
 })
 export class NgrxTodosComponent implements AfterViewInit {
 	readonly store = inject(TodosStore)
+
+	readonly todosDatasource = this.store.todosDatasource
+	readonly isLoading = this.store.isLoading
+	readonly paginationLength = this.store.pagination.itemsCount
+	readonly query = this.store.query
+	readonly getTodosByQuery = this.store.getTodosByQuery
+	readonly deleteTodo = this.store.deleteTodo
+
 	queryForm: FormGroup
-	displayedColumns = ["id", "title", "description", "completed", "actions"]
+	displayedColumns = ["id", "title", "createdAt", "updatedAt", "completed", "actions"]
 
 	isOpened = false
-	selectedTodo?: Todo = undefined
+	selectedTodo?: Todo
 
 	@ViewChild("paginator", { static: true })
 	// @ts-expect-error
@@ -71,9 +79,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	ngInit(): void {
-		const query = this.store.query
-
-		this.store.getTodosQuery(query)
+		this.getTodosByQuery(this.query)
 	}
 
 	ngAfterViewInit(): void {
@@ -116,21 +122,30 @@ export class NgrxTodosComponent implements AfterViewInit {
 
 	removeTodo(todo: Todo) {
 		this.paginator.pageIndex = 0
-		this.todosService.deleteTodo(todo.id).subscribe(() => {
-			// if (res.data?.success) this.getTodosPaginated()
-		})
+		this.deleteTodo(todo.id)
 	}
 
 	viewTodo(todo: Todo) {
-		console.log("🚀 ~ TodoTableComponent ~ todo:", todo)
 		this.selectedTodo = todo
 		this.viewModal.open.set(true)
 	}
 
 	editTodo(todo: Todo) {
-		console.log("🚀 ~ TodoTableComponent ~ todo:", todo)
 		this.selectedTodo = todo
 		this.createEditModal.mode.set("edit")
+		this.createEditModal.open.set(true)
+	}
+
+	addTodo() {
+		this.selectedTodo = {
+			id: -1,
+			title: "New Todo",
+			description: "",
+			completed: false,
+			createdAt: "",
+			updatedAt: ""
+		}
+		this.createEditModal.mode.set("create")
 		this.createEditModal.open.set(true)
 	}
 }

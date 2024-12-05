@@ -58,9 +58,6 @@ module.exports = {
 				"Segoe UI Symbol",
 				"Noto Color Emoji"
 			]
-		},
-		gridTemplateColumns: {
-			modal: "1fr 3fr"
 		}
 	},
 	plugins: []
