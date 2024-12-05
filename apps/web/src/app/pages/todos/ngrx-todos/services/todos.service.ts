@@ -3,43 +3,18 @@ import { Injectable } from "@angular/core"
 import { Observable } from "rxjs"
 import { Paginated, QueryOptions } from "../../../../models/pagination.model"
 import { Todo } from "../../../../models/todo.model"
-import { CreateTodo, UpdateTodo } from "../models/todo.model"
-import { CrudServiceA } from "./crud.service"
+import { CrudService } from "./crud.service"
 
 @Injectable({ providedIn: "root" })
-export class TodosService {
-	constructor(private http: HttpClient) {}
-
-	getTodosPaginated(query: QueryOptions): Observable<Paginated<Todo>> {
-		return this.http.post<Paginated<Todo>>("api/todos/paginated", query)
-	}
-
-	getTodoById(id: number): Observable<Todo> {
-		return this.http.get<Todo>(`api/todos/${id}`)
-	}
-
-	updateTodo({ id, ...data }: UpdateTodo): Observable<Todo> {
-		return this.http.patch<Todo>(`api/todos/${id}`, data)
-	}
-
-	addTodo(todo: CreateTodo): Observable<Todo> {
-		return this.http.post<Todo>("api/todos", todo)
-	}
-
-	deleteTodo(id: number): Observable<{ success: boolean }> {
-		return this.http.delete<{ success: boolean }>(`api/todos/${id}`)
-	}
-}
-
-export class TodosServiceA implements CrudServiceA<Todo, QueryOptions> {
+export class TodosService implements CrudService<Todo, QueryOptions> {
 	constructor(private http: HttpClient) {}
 
 	getAll(): Observable<Todo[]> {
 		return this.http.get<Todo[]>("api/todos")
 	}
 
-	getAllPaginated(query: QueryOptions): Observable<Todo[]> {
-		return this.http.post<Todo[]>("api/todos/paginated", query)
+	getAllPaginated(query: QueryOptions): Observable<Paginated<Todo>> {
+		return this.http.post<Paginated<Todo>>("api/todos/paginated", query)
 	}
 
 	getOne(id: Pick<Todo, "id">): Observable<Todo> {
@@ -50,8 +25,8 @@ export class TodosServiceA implements CrudServiceA<Todo, QueryOptions> {
 		return this.http.post<Todo>("api/todos", value)
 	}
 
-	updateOne(value: Partial<Todo>): Observable<Todo> {
-		return this.http.put<Todo>(`api/todos/${value.id}`, value)
+	updateOne({ id, ...data }: Partial<Todo>): Observable<Todo> {
+		return this.http.patch<Todo>(`api/todos/${id}`, data)
 	}
 
 	deleteOne(id: Pick<Todo, "id">): Observable<{ success: true }> {

@@ -51,7 +51,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 
 	readonly todosDatasource = this.store.todosDatasource
 	readonly isLoading = this.store.isLoading
-	readonly paginationLength = this.store.todos.pagination.itemsCount
+	readonly paginationLength = this.store.pagination.itemsCount
 	readonly query = this.store.query
 	readonly getTodosByQuery = this.store.getTodosByQuery
 	readonly deleteTodo = this.store.deleteTodo

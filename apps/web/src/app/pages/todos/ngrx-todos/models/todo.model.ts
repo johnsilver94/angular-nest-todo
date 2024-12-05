@@ -1,4 +1,4 @@
-export type BaseEntity = { id: number; createdAt: string; updatedAt: string }
+import { BaseEntity } from "./crud.model"
 
 export type Todo = BaseEntity & {
 	title: string
