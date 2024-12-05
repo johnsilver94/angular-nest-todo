@@ -15,7 +15,7 @@
 		</mat-form-field>
 	</form>
 	<button
-		class="w-48 h-14 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 flex gap-1 items-center justify-center rounded-2xl">
+		class="w-48 h-14 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 flex gap-1 items-center justify-center rounded-2xl" (click)="addTodo()">
 		<span class="material-symbols-outlined">add</span>
 		Add Todo
 	</button>
@@ -53,12 +53,12 @@
 		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 	</table>
-	<mat-progress-bar mode="indeterminate" *ngIf="store.isLoading()"></mat-progress-bar>
+	<mat-progress-bar mode="indeterminate" *ngIf="isLoading()"></mat-progress-bar>
 
 	<mat-paginator
 		#paginator
 		[pageSizeOptions]="[5, 10, 20, 50]"
-		[length]="store.todos.pagination.itemsCount()"
+		[length]="paginationLength()"
 		showFirstLastButtons
 		aria-label="Select page of todos table" />
 </div>

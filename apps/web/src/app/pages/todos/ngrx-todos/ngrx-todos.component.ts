@@ -47,14 +47,27 @@ import { ViewTodoComponent } from "./view-todo/view-todo.component"
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgrxTodosComponent implements AfterViewInit {
-	store = inject(TodosStore)
+	readonly store = inject(TodosStore)
 
 	readonly todosDatasource = this.store.todosDatasource
+	readonly isLoading = this.store.isLoading
+	readonly paginationLength = this.store.todos.pagination.itemsCount
+	readonly query = this.store.query
+	readonly getTodosQuery = this.store.getTodosQuery
+
 	queryForm: FormGroup
-	displayedColumns = ["id", "title", "description", "completed", "actions"]
+	displayedColumns = ["id", "title", "createdAt", "updatedAt", "completed", "actions"]
 
 	isOpened = false
-	selectedTodo?: Todo = undefined
+	selectedTodo?: Todo = {
+		id: 19,
+		title: "Reply to Emails",
+		description:
+			"Allocate an hour to go through the inbox, responding to urgent emails and sorting others for follow-up later in the week.",
+		completed: true,
+		createdAt: "2024-10-07T19:53:46.112Z",
+		updatedAt: "2024-10-07T19:54:01.713Z"
+	}
 
 	@ViewChild("paginator", { static: true })
 	// @ts-expect-error
@@ -73,9 +86,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	ngInit(): void {
-		const query = this.store.query
-
-		this.store.getTodosQuery(query)
+		this.getTodosQuery(this.query)
 	}
 
 	ngAfterViewInit(): void {
@@ -124,15 +135,26 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	viewTodo(todo: Todo) {
-		console.log("🚀 ~ TodoTableComponent ~ todo:", todo)
 		this.selectedTodo = todo
 		this.viewModal.open.set(true)
 	}
 
 	editTodo(todo: Todo) {
-		console.log("🚀 ~ TodoTableComponent ~ todo:", todo)
 		this.selectedTodo = todo
 		this.createEditModal.mode.set("edit")
+		this.createEditModal.open.set(true)
+	}
+
+	addTodo() {
+		this.selectedTodo = {
+			id: -1,
+			title: "New Todo",
+			description: "",
+			completed: false,
+			createdAt: "",
+			updatedAt: ""
+		}
+		this.createEditModal.mode.set("create")
 		this.createEditModal.open.set(true)
 	}
 }

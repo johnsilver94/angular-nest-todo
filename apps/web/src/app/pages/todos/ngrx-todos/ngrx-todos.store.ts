@@ -30,11 +30,9 @@ const initialState: TodosState = {
 }
 
 export const TodosStore = signalStore(
-	{ providedIn: "root" },
 	withState(initialState),
-	// withSele
 	withComputed(({ todos }) => ({
-		todosDatasource: computed(() => new MatTableDataSource(todos().data))
+		todosDatasource: computed(() => new MatTableDataSource(todos.data()))
 	})),
 	withMethods((store, todosService = inject(TodosService)) => ({
 		updateQuery: (query: Partial<QueryOptions>) => {
@@ -49,7 +47,11 @@ export const TodosStore = signalStore(
 					console.log("🚀 ~ switchMap ~ query:", query)
 					return todosService.getTodosPaginated(query).pipe(
 						tapResponse({
-							next: (todos) => patchState(store, { todos }),
+							next: (todos) => { 
+								console.log("🚀 ~ switchMap ~ todos:", todos)
+								
+								return patchState(store, { todos })
+							},
 							error: console.error,
 							finalize: () => patchState(store, { isLoading: false })
 						})
