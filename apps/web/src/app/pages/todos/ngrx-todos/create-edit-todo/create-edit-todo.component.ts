@@ -30,8 +30,8 @@ export class CreateEditTodoComponent {
 	mode = signal<Mode>("edit")
 
 	readonly isLoading = this.store.isLoading
-	readonly addTodo = this.store.addTodo
-	readonly updateTodo = this.store.updateTodo
+	readonly addTodo = this.store.addOne
+	readonly updateTodo = this.store.updateOne
 
 	todoForm: FormGroup<TodoForm> = new FormGroup({
 		title: new FormControl<string>("", { nonNullable: true, validators: [Validators.required] }),

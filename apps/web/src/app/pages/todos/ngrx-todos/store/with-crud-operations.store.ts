@@ -92,7 +92,7 @@ export function WithPaginatedCrudOperations<TEntity extends BaseEntity, TQuery e
 					})
 				)
 			),
-			deleteTodo: rxMethod<Pick<TEntity, "id">>(
+			deleteOne: rxMethod<Pick<TEntity, "id">>(
 				pipe(
 					tap(() => patchState(store, { isLoading: true })),
 					switchMap((id) => {
