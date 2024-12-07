@@ -17,19 +17,19 @@ export class TodosService implements CrudService<Todo, QueryOptions> {
 		return this.http.post<Paginated<Todo>>("api/todos/paginated", query)
 	}
 
-	getOne(id: Pick<Todo, "id">): Observable<Todo> {
+	getOne({ id }: Pick<Todo, "id">): Observable<Todo> {
 		return this.http.get<Todo>(`api/todos/${id}`)
 	}
 
-	addOne(value: Partial<Todo>): Observable<Todo> {
-		return this.http.post<Todo>("api/todos", value)
+	addOne(data: Partial<Todo>): Observable<Todo> {
+		return this.http.post<Todo>("api/todos", data)
 	}
 
 	updateOne({ id, ...data }: Partial<Todo>): Observable<Todo> {
 		return this.http.patch<Todo>(`api/todos/${id}`, data)
 	}
 
-	deleteOne(id: Pick<Todo, "id">): Observable<{ success: true }> {
+	deleteOne({ id }: Pick<Todo, "id">): Observable<{ success: true }> {
 		return this.http.delete<{ success: true }>(`api/todos/${id}`)
 	}
 }

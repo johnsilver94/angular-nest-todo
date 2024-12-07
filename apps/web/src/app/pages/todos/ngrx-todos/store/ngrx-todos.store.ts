@@ -46,7 +46,14 @@ export const TodosStore = signalStore(
 	withMethods((store) => ({
 		updateQuery: (query: Partial<QueryOptions>) => {
 			patchState(store, (state) => ({ query: { ...state.query, ...query } }))
-		}
+		},
+		getOne: (id: number) => {
+			const todo = store["todoEntities"]().find((t) => t.id === id)
+			if (todo) {
+				store.todoEntitySelect(todo.id)
+			} else {
+				store.getOne({ id })
+			}}
 	})),
 	withHooks({
 		onInit(store) {

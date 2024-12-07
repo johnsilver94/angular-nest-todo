@@ -1,7 +1,14 @@
 import { inject, Type } from "@angular/core"
 import { tapResponse } from "@ngrx/operators"
 import { patchState, signalStoreFeature, type, withMethods } from "@ngrx/signals"
-import { addEntities, removeAllEntities, SelectEntityId, updateEntity, withEntities } from "@ngrx/signals/entities"
+import {
+	addEntities,
+	addEntity,
+	removeAllEntities,
+	SelectEntityId,
+	updateEntity,
+	withEntities
+} from "@ngrx/signals/entities"
 import { rxMethod } from "@ngrx/signals/rxjs-interop"
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from "rxjs"
 import { BaseEntity, CreateOneEntity, UpdateOneEntity } from "../../models/crud.model"
@@ -55,6 +62,24 @@ export function withEntityPaginatedCrud<TEntity extends BaseEntity, TQuery exten
 					})
 				)
 			),
+			getOne: rxMethod<Pick<TEntity, "id">>(
+				pipe(
+					tap(() => patchState(store, { isLoading: true })),
+					switchMap((idObj) => {
+						return service.getOne(idObj).pipe(
+							tapResponse({
+								next: (data) => {
+									console.log("🚀 withEntityPaginatedCrud ~ switchMap ~ data:", data)
+
+									return patchState(store, addEntity(data, entityConfig))
+								},
+								error: console.error,
+								finalize: () => patchState(store, { isLoading: false })
+							})
+						)
+					})
+				)
+			),
 			addOne: rxMethod<CreateOneEntity<TEntity>>(
 				pipe(
 					tap(() => patchState(store, { isLoading: true })),
@@ -97,8 +122,8 @@ export function withEntityPaginatedCrud<TEntity extends BaseEntity, TQuery exten
 			deleteOne: rxMethod<Pick<TEntity, "id">>(
 				pipe(
 					tap(() => patchState(store, { isLoading: true })),
-					switchMap((id) => {
-						return service.deleteOne(id).pipe(
+					switchMap((idObj) => {
+						return service.deleteOne(idObj).pipe(
 							tapResponse({
 								next: () => patchState(store, { query: { ...store.query() } }),
 								error: console.error,

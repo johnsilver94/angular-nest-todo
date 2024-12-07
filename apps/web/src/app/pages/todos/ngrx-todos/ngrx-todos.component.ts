@@ -59,6 +59,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	readonly deleteTodo = this.store.deleteOne
 	readonly todoEntitySelected = this.store.todoEntitySelected
 	readonly todoEntitySelect = this.store.todoEntitySelect
+	readonly getOneTodo = this.store.getOne
 
 	queryForm: FormGroup<FilterForm> = new FormGroup({
 		title: new FormControl("", { nonNullable: true })
@@ -92,6 +93,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	ngAfterViewInit(): void {
+		this.getOneTodo({ id: 4 })
 		const { pageSize } = this.store.query()
 		this.paginator.pageSize = pageSize
 		this.store.todosDatasource().paginator = this.paginator
