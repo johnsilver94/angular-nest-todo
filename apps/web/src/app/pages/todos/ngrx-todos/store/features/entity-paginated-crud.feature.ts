@@ -20,7 +20,7 @@ export type BaseState<TQuery extends BaseQuery> = {
 	isLoading: boolean
 }
 
-export function withPaginatedCrud<TEntity extends BaseEntity, TQuery extends BaseQuery>(
+export function withEntityPaginatedCrud<TEntity extends BaseEntity, TQuery extends BaseQuery>(
 	entityConfig: {
 		entity: TEntity
 		collection: string

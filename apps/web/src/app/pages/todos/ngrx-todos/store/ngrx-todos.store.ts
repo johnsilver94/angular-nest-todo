@@ -4,12 +4,15 @@ import { patchState, signalStore, type, withComputed, withHooks, withMethods, wi
 import { entityConfig } from "@ngrx/signals/entities"
 import { QueryOptions, SortDirection } from "../../../../models/pagination.model"
 import { Todo } from "../../../../models/todo.model"
+import { BaseEntity } from "../models/crud.model"
 import { TodosService } from "../services/todos.service"
+import { BaseState, withEntityPaginatedCrud } from "./features/entity-paginated-crud.feature"
 import { withLogger } from "./features/logger.feature"
-import { BaseState, withPaginatedCrud } from "./features/paginated-crud.feature"
 import { withSelectedEntity } from "./features/selected-entity.feature"
 
 type TodosState = BaseState<QueryOptions>
+
+type Another = BaseEntity & { another: string }
 
 const initialState: TodosState = {
 	pagination: { pageNumber: 1, pageSize: 10, pagesCount: 0, itemsCount: 0 },
@@ -32,8 +35,10 @@ const todoConfig = entityConfig({
 
 export const TodosStore = signalStore(
 	withState(initialState),
-	withPaginatedCrud<Todo, QueryOptions>(todoConfig, TodosService),
+	withEntityPaginatedCrud<Todo, QueryOptions>(todoConfig, TodosService),
 	withSelectedEntity<Todo, "todo">({ entity: todoConfig.entity, collection: todoConfig.collection }),
+	withSelectedEntity<Another>(),
+
 	withLogger(),
 	withComputed(({ todoEntities }) => ({
 		todosDatasource: computed(() => new MatTableDataSource(todoEntities()))
