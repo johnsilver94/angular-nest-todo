@@ -1,4 +1,4 @@
-export interface PaginationOptions {
+export type PaginationOptions = {
 	pageNumber: number
 	pageSize: number
 }
@@ -8,12 +8,12 @@ export enum SortDirection {
 	DESC = "DESC"
 }
 
-export interface SortingOptions {
+export type SortingOptions = {
 	sortField: string
 	sortDirection: SortDirection
 }
 
-export interface FilterOptions {
+export type FilterOptions = {
 	filterField: string
 	filterValue: string
 }
@@ -22,12 +22,14 @@ export type BaseQuery = PaginationOptions
 
 export type QueryOptions = PaginationOptions & FilterOptions & SortingOptions
 
-export interface Paginated<TData = unknown> {
+export type Pagination = {
+	pageNumber: number
+	pageSize: number
+	pagesCount: number
+	itemsCount: number
+}
+
+export type Paginated<TData = unknown> = {
 	data: TData[]
-	pagination: {
-		pageNumber: number
-		pageSize: number
-		pagesCount: number
-		itemsCount: number
-	}
+	pagination: Pagination
 }

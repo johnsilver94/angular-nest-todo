@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common"
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, inject } from "@angular/core"
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, computed, inject } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { MatButtonModule } from "@angular/material/button"
 import { MatFormFieldModule } from "@angular/material/form-field"
@@ -57,10 +57,14 @@ export class NgrxTodosComponent implements AfterViewInit {
 	readonly query = this.store.query
 	readonly getTodosPaginatedByQuery = this.store.getAllPaginated
 	readonly deleteTodo = this.store.deleteOne
+	readonly todoEntitySelected = this.store.todoEntitySelected
+	readonly todoEntitySelect = this.store.todoEntitySelect
 
 	queryForm: FormGroup<FilterForm> = new FormGroup({
 		title: new FormControl("", { nonNullable: true })
 	})
+
+	selected = computed(() => JSON.stringify(this.todoEntitySelected()))
 
 	displayedColumns: { key: string; name: string }[] = [
 		{ key: "id", name: "ID" },
@@ -124,6 +128,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 
 	viewTodo(todo: Todo) {
 		this.selectedTodo = todo
+		this.todoEntitySelect(todo.id)
 		this.viewModal.open.set(true)
 	}
 

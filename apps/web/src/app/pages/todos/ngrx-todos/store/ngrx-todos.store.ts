@@ -5,7 +5,9 @@ import { entityConfig } from "@ngrx/signals/entities"
 import { QueryOptions, SortDirection } from "../../../../models/pagination.model"
 import { Todo } from "../../../../models/todo.model"
 import { TodosService } from "../services/todos.service"
-import { BaseState, WithPaginatedCrudOperations } from "./with-crud-operations.store"
+import { withLogger } from "./features/logger.feature"
+import { BaseState, withPaginatedCrud } from "./features/paginated-crud.feature"
+import { withSelectedEntity } from "./features/selected-entity.feature"
 
 type TodosState = BaseState<QueryOptions>
 
@@ -30,7 +32,9 @@ const todoConfig = entityConfig({
 
 export const TodosStore = signalStore(
 	withState(initialState),
-	WithPaginatedCrudOperations<Todo, QueryOptions>(todoConfig, TodosService),
+	withPaginatedCrud<Todo, QueryOptions>(todoConfig, TodosService),
+	withSelectedEntity<Todo, "todo">({ entity: todoConfig.entity, collection: todoConfig.collection }),
+	withLogger(),
 	withComputed(({ todoEntities }) => ({
 		todosDatasource: computed(() => new MatTableDataSource(todoEntities()))
 	})),
