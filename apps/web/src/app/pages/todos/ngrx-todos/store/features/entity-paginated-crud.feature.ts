@@ -1,7 +1,7 @@
 import { inject, Type } from "@angular/core"
 import { tapResponse } from "@ngrx/operators"
 import { patchState, signalStoreFeature, type, withMethods } from "@ngrx/signals"
-import { addEntities, removeAllEntities, SelectEntityId, updateEntity, withEntities } from "@ngrx/signals/entities"
+import { addEntities, removeAllEntities, SelectEntityId, updateEntity } from "@ngrx/signals/entities"
 import { rxMethod } from "@ngrx/signals/rxjs-interop"
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from "rxjs"
 import { BaseEntity, CreateOneEntity, UpdateOneEntity } from "../../models/crud.model"
@@ -32,7 +32,7 @@ export function withEntityPaginatedCrud<TEntity extends BaseEntity, TQuery exten
 		{
 			state: type<BaseState<TQuery>>()
 		},
-		withEntities(entityConfig),
+		// withEntities(entityConfig),
 		withRequestStatus(),
 		withMethods((store, service = inject(dataService)) => ({
 			getAllPaginated: rxMethod<TQuery>(

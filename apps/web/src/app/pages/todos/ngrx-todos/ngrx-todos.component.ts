@@ -10,7 +10,7 @@ import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
 import { MatProgressBarModule } from "@angular/material/progress-bar"
 import { MatSelectModule } from "@angular/material/select"
 import { MatSort, MatSortModule } from "@angular/material/sort"
-import { MatTableModule } from "@angular/material/table"
+import { MatTableDataSource, MatTableModule } from "@angular/material/table"
 import { ROW_ANIMATION } from "../../../animations/row.animation"
 import { SortDirection } from "../../../models/pagination.model"
 import { Todo } from "../../../models/todo.model"
@@ -51,7 +51,6 @@ type FilterForm = {
 export class NgrxTodosComponent implements AfterViewInit {
 	readonly store = inject(TodosStore)
 
-	readonly todosDatasource = this.store.todosDatasource
 	readonly isLoading = this.store.isLoading
 	readonly paginationLength = this.store.pagination.itemsCount
 	readonly query = this.store.query
@@ -60,6 +59,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	readonly todoEntitySelect = this.store.todoEntitySelect
 	readonly todoEntitySelected = this.store.todoEntitySelected
 	readonly getOneTodo = this.store.getOne
+	readonly todoEntities = this.store.todoEntities
 
 	queryForm: FormGroup<FilterForm> = new FormGroup({
 		title: new FormControl("", { nonNullable: true })
@@ -89,16 +89,19 @@ export class NgrxTodosComponent implements AfterViewInit {
 	@ViewChild(CreateEditTodoComponent) createEditModal!: CreateEditTodoComponent
 
 	ngInit(): void {
+		console.log("🚀 ~ NgrxTodosComponent ~ ngInit ~ ngInit:")
 		this.getTodosPaginatedByQuery(this.query)
 	}
+
+	todosDatasource = computed(() => new MatTableDataSource(this.todoEntities()))
 
 	ngAfterViewInit(): void {
 		console.log("🚀 ~ NgrxTodosComponent ~ ngAfterViewInit ~ ngAfterViewInit:")
 
 		const { pageSize } = this.store.query()
 		this.paginator.pageSize = pageSize
-		this.store.todosDatasource().paginator = this.paginator
-		this.store.todosDatasource().sort = this.sort
+		this.todosDatasource().paginator = this.paginator
+		this.todosDatasource().sort = this.sort
 
 		this.sort.sortChange.subscribe(({ active, direction }) => {
 			this.store.updateQuery({

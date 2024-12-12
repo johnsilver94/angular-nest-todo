@@ -1,9 +1,9 @@
+import { computed } from "@angular/core"
 import { patchState, signalStore, type, withComputed, withHooks, withMethods, withState } from "@ngrx/signals"
 import { addEntities, withEntities } from "@ngrx/signals/entities"
 import { Permission, PermissionCategory, PermissionSection } from "../../../models/permission.models"
-import { computed } from "@angular/core"
-import { permissionCategoryListMock, permissionListMock, permissionSectionListMock } from "./permissions.mock"
 import { CheckBoxTreeNode, Section } from "../../../models/tree.model"
+import { permissionCategoryListMock, permissionListMock, permissionSectionListMock } from "./permissions.mock"
 
 type PermissionsState = {
 	checkedPermissions: string[]
@@ -40,7 +40,8 @@ export const PermissionsStore = signalStore(
 
 					const leaf_children: CheckBoxTreeNode[] = category_permissions.map(({ name, id }) => ({
 						type: "leaf",
-						data: { name, completed: checkedPermissions().includes(id) }
+						data: { name, completed: checkedPermissions().includes(id) },
+						children: []
 					}))
 
 					const children = [...subcategories_tree, ...leaf_children]
@@ -106,7 +107,8 @@ export const PermissionsStore = signalStore(
 							.filter((permission) => !permission.section_key && !permission.category_key)
 							.map(({ id, name }) => ({
 								type: "leaf",
-								data: { name, completed: checkedPermissions().includes(id) }
+								data: { name, completed: checkedPermissions().includes(id) },
+								children: []
 							}))
 					}
 				]
