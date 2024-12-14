@@ -1,16 +1,21 @@
 import { computed } from "@angular/core"
+import { tapResponse } from "@ngrx/operators"
 import { patchState, signalStore, type, withComputed, withHooks, withMethods, withState } from "@ngrx/signals"
 import { addEntities, withEntities } from "@ngrx/signals/entities"
+import { rxMethod } from "@ngrx/signals/rxjs-interop"
+import { delay, of, pipe, switchMap, tap } from "rxjs"
 import { Permission, PermissionCategory, PermissionSection } from "../../../models/permission.models"
 import { CheckBoxTreeNode, Section } from "../../../models/tree.model"
 import { permissionCategoryListMock, permissionListMock, permissionSectionListMock } from "./permissions.mock"
 
 type PermissionsState = {
-	checkedPermissions: string[]
+	permissions: string[]
+	isLoading: boolean
 }
 
 const initialState: PermissionsState = {
-	checkedPermissions: ["1", "2", "5", "8"]
+	permissions: ["1", "2", "5", "8"],
+	isLoading: false
 }
 
 export const PermissionsStore = signalStore(
@@ -18,8 +23,9 @@ export const PermissionsStore = signalStore(
 	withEntities({ entity: type<Permission>(), collection: "permission" }),
 	withEntities({ entity: type<PermissionSection>(), collection: "section" }),
 	withEntities({ entity: type<PermissionCategory>(), collection: "category" }),
-	withComputed(({ sectionEntities, categoryEntities, permissionEntities, checkedPermissions }) => ({
+	withComputed(({ sectionEntities, categoryEntities, permissionEntities, permissions: checkedPermissions }) => ({
 		getSections: computed<Section[]>(() => {
+			console.log("🚀 ~ withComputed ~ checkedPermissions:", checkedPermissions())
 			const buildCategoriesTree = (
 				// section permissions
 				permissions: Permission[],
@@ -118,24 +124,33 @@ export const PermissionsStore = signalStore(
 		})
 	})),
 	withMethods((store) => ({
-		updateCheckedPermissions(checkedPermissions: string[]): void {
-			patchState(store, { checkedPermissions })
-		},
-		getPermissions(): void {
-			patchState(store, addEntities(permissionListMock, { collection: "permission" }))
-		},
-		getPermissionSections(): void {
-			patchState(store, addEntities(permissionSectionListMock, { collection: "section" }))
-		},
-		getPermissionCategories(): void {
-			patchState(store, addEntities(permissionCategoryListMock, { collection: "category" }))
-		}
+		updatePermissions: rxMethod<string[]>(
+			pipe(
+				tap(() => patchState(store, { isLoading: true })),
+				delay(1000),
+				switchMap((ids) => {
+					console.log("🚀 ~ switchMap ~ ids:", ids)
+					return of(ids).pipe(
+						tapResponse({
+							next: (data) => patchState(store, { permissions: data }),
+							error: console.error,
+							finalize: () => patchState(store, { isLoading: false })
+						})
+					)
+				})
+			)
+		)
 	})),
 	withHooks({
-		onInit: ({ getPermissions, getPermissionSections, getPermissionCategories }) => {
-			getPermissions()
-			getPermissionSections()
-			getPermissionCategories()
+		onInit: (store) => {
+			console.log("🚀 ~ onInit hook")
+
+			patchState(store, addEntities(permissionListMock, { collection: "permission" }))
+			patchState(store, addEntities(permissionSectionListMock, { collection: "section" }))
+			patchState(store, addEntities(permissionCategoryListMock, { collection: "category" }))
+		},
+		onDestroy: () => {
+			console.log("🚀 ~ onDestroy hook")
 		}
 	})
 )
