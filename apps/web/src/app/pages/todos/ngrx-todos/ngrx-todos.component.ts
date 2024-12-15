@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { CommonModule } from "@angular/common"
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, effect, inject } from "@angular/core"
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, computed, inject } from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { MatButtonModule } from "@angular/material/button"
 import { MatFormFieldModule } from "@angular/material/form-field"
@@ -11,14 +10,17 @@ import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator"
 import { MatProgressBarModule } from "@angular/material/progress-bar"
 import { MatSelectModule } from "@angular/material/select"
 import { MatSort, MatSortModule } from "@angular/material/sort"
-import { MatTableModule } from "@angular/material/table"
+import { MatTableDataSource, MatTableModule } from "@angular/material/table"
 import { ROW_ANIMATION } from "../../../animations/row.animation"
 import { SortDirection } from "../../../models/pagination.model"
 import { Todo } from "../../../models/todo.model"
-import { TodosService } from "../../../services/todos.service"
 import { CreateEditTodoComponent } from "./create-edit-todo/create-edit-todo.component"
 import { TodosStore } from "./store/ngrx-todos.store"
 import { ViewTodoComponent } from "./view-todo/view-todo.component"
+
+type FilterForm = {
+	title: FormControl<string>
+}
 
 @Component({
 	selector: "ant-ngrx-todos",
@@ -49,44 +51,57 @@ import { ViewTodoComponent } from "./view-todo/view-todo.component"
 export class NgrxTodosComponent implements AfterViewInit {
 	readonly store = inject(TodosStore)
 
-	readonly todosDatasource = this.store.todosDatasource
 	readonly isLoading = this.store.isLoading
 	readonly paginationLength = this.store.pagination.itemsCount
 	readonly query = this.store.query
-	readonly getTodosByQuery = this.store.getTodosByQuery
-	readonly deleteTodo = this.store.deleteTodo
+	readonly getTodosPaginatedByQuery = this.store.getAllPaginated
+	readonly deleteTodo = this.store.deleteOne
+	readonly todoEntitySelect = this.store.todoEntitySelect
+	readonly todoEntitySelected = this.store.todoEntitySelected
+	readonly getOneTodo = this.store.getOne
+	readonly todoEntities = this.store.todoEntities
 
-	queryForm: FormGroup
-	displayedColumns = ["id", "title", "createdAt", "updatedAt", "completed", "actions"]
+	queryForm: FormGroup<FilterForm> = new FormGroup({
+		title: new FormControl("", { nonNullable: true })
+	})
+
+	selected = computed(() => JSON.stringify(this.todoEntitySelected()))
+
+	displayedColumns: { key: string; name: string }[] = [
+		{ key: "id", name: "ID" },
+		{ key: "title", name: "Title" },
+		{ key: "createdAt", name: "Created At" },
+		{ key: "updatedAt", name: "Updated At" },
+		{ key: "completed", name: "Completed" },
+		{ key: "actions", name: "Actions" }
+	]
+
+	columnsToDisplay = this.displayedColumns.map((column) => column.key)
 
 	isOpened = false
 	selectedTodo?: Todo
 
 	@ViewChild("paginator", { static: true })
-	// @ts-expect-error
-	paginator: MatPaginator
-	// @ts-expect-error
-	@ViewChild(MatSort) sort: MatSort
+	paginator!: MatPaginator
+	@ViewChild(MatSort) sort!: MatSort
 
 	@ViewChild(ViewTodoComponent) viewModal!: ViewTodoComponent
 	@ViewChild(CreateEditTodoComponent) createEditModal!: CreateEditTodoComponent
 
-	constructor(private todosService: TodosService) {
-		this.queryForm = this.createQueryForm()
-		effect(() => {
-			console.log("🚀 ~ NgrxTodosComponent ~ isOpened:", this.isOpened)
-		})
+	ngInit(): void {
+		console.log("🚀 ~ NgrxTodosComponent ~ ngInit ~ ngInit:")
+		this.getTodosPaginatedByQuery(this.query)
 	}
 
-	ngInit(): void {
-		this.getTodosByQuery(this.query)
-	}
+	todosDatasource = computed(() => new MatTableDataSource(this.todoEntities()))
 
 	ngAfterViewInit(): void {
+		console.log("🚀 ~ NgrxTodosComponent ~ ngAfterViewInit ~ ngAfterViewInit:")
+
 		const { pageSize } = this.store.query()
 		this.paginator.pageSize = pageSize
-		this.store.todosDatasource().paginator = this.paginator
-		this.store.todosDatasource().sort = this.sort
+		this.todosDatasource().paginator = this.paginator
+		this.todosDatasource().sort = this.sort
 
 		this.sort.sortChange.subscribe(({ active, direction }) => {
 			this.store.updateQuery({
@@ -99,11 +114,9 @@ export class NgrxTodosComponent implements AfterViewInit {
 				pageNumber: pageIndex + 1,
 				pageSize: pageSize
 			})
-			console.log("🚀 ~ NgrxTodosComponent ~ this.paginator.page.subscribe ~ pageIndex:", pageIndex, this.store.query())
 		})
 
 		this.queryForm.valueChanges.subscribe(({ title }) => {
-			console.log("🚀 ~ NgrxTodosComponent ~ this.queryForm.valueChanges.subscribe ~ title:", title, this.store.query())
 			this.store.updateQuery({
 				filterValue: title || ""
 			})
@@ -111,22 +124,17 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	clearFilters() {
-		this.queryForm.reset(this.createQueryForm().getRawValue())
-	}
-
-	createQueryForm() {
-		return new FormGroup({
-			title: new FormControl("")
-		})
+		this.queryForm.reset()
 	}
 
 	removeTodo(todo: Todo) {
 		this.paginator.pageIndex = 0
-		this.deleteTodo(todo.id)
+		this.deleteTodo({ id: todo.id })
 	}
 
 	viewTodo(todo: Todo) {
 		this.selectedTodo = todo
+		this.todoEntitySelect(todo.id)
 		this.viewModal.open.set(true)
 	}
 
@@ -137,6 +145,7 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	addTodo() {
+		this.getOneTodo({ id: 4 })
 		this.selectedTodo = {
 			id: -1,
 			title: "New Todo",

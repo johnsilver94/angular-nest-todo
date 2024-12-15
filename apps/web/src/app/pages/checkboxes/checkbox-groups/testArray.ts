@@ -55,11 +55,6 @@ export const arrayToTreeTest = () => {
 	})
 
 	// console.table(permissionCategoryList)
-
-	trees.forEach((tree) => {
-		console.log("🚀 ~ trees.forEach ~ tree:", tree)
-	})
-
 	const sections = permissionSectionListMock.map(({ id, name, description }) => {
 		return {
 			name,
@@ -85,8 +80,7 @@ export const arrayToTreeTest = () => {
 			}))
 	})
 
-	console.table(sections)
-	console.log(sections)
+	// console.table(sections)
 
 	console.timeEnd("arrayToTree time")
 	console.groupEnd()
@@ -116,7 +110,8 @@ export const getSections = () => {
 
 			const leaf_children: CheckBoxTreeNode[] = category_permissions.map(({ name, id }) => ({
 				type: "leaf",
-				data: { name, completed: checkedPermissions.includes(id) }
+				data: { name, completed: checkedPermissions.includes(id) },
+				children: []
 			}))
 
 			const children = [...subcategories_tree, ...leaf_children]
@@ -182,7 +177,8 @@ export const getSections = () => {
 					.filter(({ section_key, category_key }) => !section_key && !category_key)
 					.map(({ id, name }) => ({
 						type: "leaf",
-						data: { name, completed: checkedPermissions.includes(id) }
+						data: { name, completed: checkedPermissions.includes(id) },
+						children: []
 					}))
 			}
 		]

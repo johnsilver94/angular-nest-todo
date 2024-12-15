@@ -16,6 +16,7 @@ type ChildNode<TData = unknown> = {
 type LeafNode<TData = unknown> = {
 	data: TData
 	type: "leaf"
+	children: TreeNode<TData>[]
 }
 
 // Node used as list for orphan nodes

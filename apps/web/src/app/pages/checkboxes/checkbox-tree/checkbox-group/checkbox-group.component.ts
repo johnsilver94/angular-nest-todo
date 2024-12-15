@@ -1,7 +1,7 @@
+import { CommonModule } from "@angular/common"
 import { ChangeDetectionStrategy, Component, computed, model, output } from "@angular/core"
 import { FormsModule } from "@angular/forms"
 import { MatCheckboxModule } from "@angular/material/checkbox"
-import { CommonModule } from "@angular/common"
 import { CheckBoxTreeNode } from "../../../../models/tree.model"
 
 type CheckBoxGroupUpdate = { completed: boolean; name: string }
@@ -30,7 +30,12 @@ export class CheckboxGroupComponent {
 		const group = this.group()
 		if (group.type === "leaf" || group.type === "virtual" || !group.children) return false
 
-		return group.children.some((t) => t.data.completed) && !group.children.every((t) => t.data.completed)
+		const nephews = group.children.flatMap((t) => t.children ?? [])
+
+		return (
+			(group.children.some((t) => t.data.completed) || nephews.some((t) => t.data.completed)) &&
+			!group.children.every((t) => t.data.completed)
+		)
 	})
 
 	// On child checkbox update, emit event to parent component. only for

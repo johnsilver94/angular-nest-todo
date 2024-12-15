@@ -1,12 +1,13 @@
 import { inject, Type } from "@angular/core"
 import { tapResponse } from "@ngrx/operators"
 import { patchState, signalStoreFeature, type, withMethods } from "@ngrx/signals"
-import { addEntities, removeAllEntities, SelectEntityId, updateEntity, withEntities } from "@ngrx/signals/entities"
+import { addEntities, removeAllEntities, SelectEntityId, updateEntity } from "@ngrx/signals/entities"
 import { rxMethod } from "@ngrx/signals/rxjs-interop"
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from "rxjs"
-import { BaseEntity, CreateOneEntity, UpdateOneEntity } from "../models/crud.model"
-import { BaseQuery } from "../models/pagination.model"
-import { CrudService } from "../services/crud.service"
+import { BaseEntity, CreateOneEntity, UpdateOneEntity } from "../../models/crud.model"
+import { BaseQuery } from "../../models/pagination.model"
+import { CrudService } from "../../services/crud.service"
+import { withRequestStatus } from "./request-status.feature"
 
 export type BaseState<TQuery extends BaseQuery> = {
 	pagination: {
@@ -19,19 +20,20 @@ export type BaseState<TQuery extends BaseQuery> = {
 	isLoading: boolean
 }
 
-export function WithPaginatedCrudOperations<TEntity extends BaseEntity, TQuery extends BaseQuery>(
+export function withEntityPaginatedCrud<TEntity extends BaseEntity, TQuery extends BaseQuery>(
 	entityConfig: {
 		entity: TEntity
 		collection: string
 		selectId: SelectEntityId<NoInfer<TEntity>>
 	},
-	dataService: Type<CrudService<TEntity, TQuery>> // pass the service here
+	dataService: Type<CrudService<TEntity, TQuery>>
 ) {
 	return signalStoreFeature(
 		{
 			state: type<BaseState<TQuery>>()
 		},
-		withEntities(entityConfig),
+		// withEntities(entityConfig),
+		withRequestStatus(),
 		withMethods((store, service = inject(dataService)) => ({
 			getAllPaginated: rxMethod<TQuery>(
 				pipe(
@@ -92,11 +94,11 @@ export function WithPaginatedCrudOperations<TEntity extends BaseEntity, TQuery e
 					})
 				)
 			),
-			deleteTodo: rxMethod<Pick<TEntity, "id">>(
+			deleteOne: rxMethod<Pick<TEntity, "id">>(
 				pipe(
 					tap(() => patchState(store, { isLoading: true })),
-					switchMap((id) => {
-						return service.deleteOne(id).pipe(
+					switchMap((idObj) => {
+						return service.deleteOne(idObj).pipe(
 							tapResponse({
 								next: () => patchState(store, { query: { ...store.query() } }),
 								error: console.error,
