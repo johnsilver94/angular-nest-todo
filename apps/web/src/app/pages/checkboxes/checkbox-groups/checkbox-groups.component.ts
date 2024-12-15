@@ -1,4 +1,3 @@
-import { JsonPipe } from "@angular/common"
 import { ChangeDetectionStrategy, Component, computed, inject, model, OnInit } from "@angular/core"
 import { FormsModule } from "@angular/forms"
 import { MatCheckboxModule } from "@angular/material/checkbox"
@@ -35,7 +34,7 @@ export type Section = {
 @Component({
 	selector: "ant-checkbox-groups",
 	standalone: true,
-	imports: [MatCheckboxModule, FormsModule, CheckboxGroupComponent, JsonPipe],
+	imports: [MatCheckboxModule, FormsModule, CheckboxGroupComponent],
 	templateUrl: "./checkbox-groups.component.html",
 	styleUrl: "./checkbox-groups.component.scss",
 	providers: [PermissionsStore],
@@ -173,7 +172,7 @@ export class CheckboxGroupsComponent implements OnInit {
 	})
 
 	checkedTreeSections = computed<Section[]>(() => {
-		const checkedSections = JSON.parse(JSON.stringify(this.treeSections())) as Section[]
+		const checkedSections = structuredClone(this.treeSections())
 		console.group("checkedSections Example")
 		console.time("checkedSections time")
 
@@ -188,16 +187,18 @@ export class CheckboxGroupsComponent implements OnInit {
 	saveChanges() {
 		console.log("🚀 ~ CheckboxGroupsComponent ~ saveChanges ~ saveChanges:", this.checkedPermissions())
 
-		this.updatePermissions(this.checkedPermissions())
+		this.updatePermissions([...this.checkedPermissions()])
 	}
 
 	discardChanges() {
-		console.log("🚀 ~ CheckboxGroupsComponent ~ discardChanges ~ discardChanges:", this.permissions())
+		console.log("🚀 ~ CheckboxGroupsComponent ~ discardChanges ~ discardChanges:", this.checkedPermissions())
+		// recheck nodes
 		this.resetPermissions()
+		// set initial checked permission ids
+		this.checkedPermissions.set([...this.store.permissions()])
 	}
 
 	// check recursively nodes
-
 	recursiveCheckNodes(tree: TreeNode<NodeData>[], permissions: string[]): TreeNode<NodeData>[] {
 		tree.map((parent_node) => {
 			if (!permissions.some((permission) => parent_node.data.permissionIds?.includes(permission))) {

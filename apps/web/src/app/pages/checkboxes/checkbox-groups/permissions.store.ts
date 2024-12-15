@@ -29,6 +29,7 @@ export const PermissionsStore = signalStore(
 	withEntities({ entity: type<PermissionCategory>(), collection: "category" }),
 	withMethods((store) => ({
 		resetPermissions: () => {
+			console.log("🚀 ~ resetPermissions", [...store.permissions()])
 			patchState(store, { permissions: [...store.permissions()] })
 		},
 		updatePermissions: rxMethod<string[]>(

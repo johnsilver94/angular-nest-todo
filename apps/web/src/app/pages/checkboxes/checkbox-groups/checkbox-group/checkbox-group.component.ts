@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common"
-import { ChangeDetectionStrategy, Component, computed, model, output } from "@angular/core"
+import { ChangeDetectionStrategy, Component, model, output } from "@angular/core"
 import { FormsModule } from "@angular/forms"
 import { MatCheckboxModule } from "@angular/material/checkbox"
 import { NodeData, TreeNode } from "../checkbox-groups.component"
@@ -20,7 +20,7 @@ export class CheckboxGroupComponent {
 		alias: "onUpdate"
 	})
 
-	children = computed(() => this.group().children)
+	// children = computed(() => this.group().children)
 
 	// On child checkbox update, emit event to parent component.
 	onChildUpdate(node: TreeNode<NodeData>) {
@@ -40,15 +40,17 @@ export class CheckboxGroupComponent {
 				node.data.checked = checked
 				node.data.intermediate = false
 
-				// check all children
+				// check all children recursively
 				this.recursiveCheckNodes(node.children, checked)
 
 				// check children checkbox
 			} else {
 				const child = node.children[node.children.findIndex((t) => t.data.key === key)]
 				console.log("🚀 ~ CheckboxGroupComponent ~ this.group.update ~ child:", child)
-				node.children[node.children.findIndex((t) => t.data.key === key)].data.checked = checked
-				node.children[node.children.findIndex((t) => t.data.key === key)].data.intermediate = false
+				child.data.checked = checked
+				child.data.intermediate =
+					!checked &&
+					(child.children.some((node) => node.data.checked) || child.children.some((node) => node.data.intermediate))
 
 				node.data.checked = node.children.every((t) => t.data.checked)
 				console.log("🚀 ~ CheckboxGroupComponent ~ this.group.update ~ node.data.checked:", node.data.checked)
@@ -65,20 +67,20 @@ export class CheckboxGroupComponent {
 
 			this.onGroupUpdate.emit(node)
 
-			return node
+			return structuredClone(node)
 		})
 	}
 
 	recursiveCheckNodes(nodes: TreeNode<NodeData>[], checked: boolean): TreeNode<NodeData>[] {
 		nodes.map((parent_node) => {
-			if (parent_node.type === "leaf") {
-				parent_node.data.checked = checked
-				parent_node.data.intermediate = false
-				this.checkPermission(parent_node.data.checked, parent_node.data.key)
-				return
-			}
+			parent_node.data.checked = checked
+			parent_node.data.intermediate = false
 
-			parent_node.children = this.recursiveCheckNodes(parent_node.children, checked)
+			if (parent_node.type === "leaf") {
+				this.checkPermission(parent_node.data.checked, parent_node.data.key)
+			} else {
+				parent_node.children = this.recursiveCheckNodes(parent_node.children, checked)
+			}
 
 			return parent_node
 		})
