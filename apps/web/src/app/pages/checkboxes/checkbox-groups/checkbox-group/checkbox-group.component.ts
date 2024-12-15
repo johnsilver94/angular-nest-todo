@@ -24,7 +24,6 @@ export class CheckboxGroupComponent {
 
 	// On child checkbox update, emit event to parent component.
 	onChildUpdate(node: TreeNode<NodeData>) {
-		console.log("🚀 ~ CheckboxGroupComponent ~ onChildUpdate ~ node:", node)
 		const group = this.group()
 		if (group.type === "virtual" || group.type === "leaf") return
 		this.update(node.data.checked, node.data.key)
@@ -46,20 +45,16 @@ export class CheckboxGroupComponent {
 				// check children checkbox
 			} else {
 				const child = node.children[node.children.findIndex((t) => t.data.key === key)]
-				console.log("🚀 ~ CheckboxGroupComponent ~ this.group.update ~ child:", child)
 				child.data.checked = checked
 				child.data.intermediate =
 					!checked &&
 					(child.children.some((node) => node.data.checked) || child.children.some((node) => node.data.intermediate))
 
 				node.data.checked = node.children.every((t) => t.data.checked)
-				console.log("🚀 ~ CheckboxGroupComponent ~ this.group.update ~ node.data.checked:", node.data.checked)
 				node.data.intermediate =
 					!node.data.checked &&
 					(node.children.some((node) => node.data.checked) || node.children.some((node) => node.data.intermediate))
 
-				console.log("🚀 ~ CheckboxGroupComponent ~ this.group.update ~ node.data.intermediate:", node.data.intermediate)
-				console.log("🚀 ~ CheckboxGroupComponent ~ this.group.update ~ node:", node)
 				if (child.type === "leaf") {
 					this.checkPermission(checked, child.data.key)
 				}
