@@ -1,12 +1,12 @@
-@for (section of store.getSections(); track $index) {
+@for (section of checkedTreeSections(); track section.key) {
 	<div>
 		<h1>{{ section.name }}</h1>
 		<p>{{ section.description }}</p>
 	</div>
 	<div class="list">
-		@for (subtree of section.tree; track $index) {
+		@for (subtree of section.tree; track subtree.data.key) {
 			<section class="section">
-				<ant-checkbox-group [group]="subtree" />
+				<ant-checkbox-group [group]="subtree" [(permissions)]="checkedPermissions" />
 			</section>
 		}
 	</div>
@@ -34,3 +34,6 @@
 		Discard
 	</button>
 </div>
+<pre>
+	{{sections() | json}}
+</pre>
