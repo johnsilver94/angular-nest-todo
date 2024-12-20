@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common"
-import { ChangeDetectionStrategy, Component, input, signal } from "@angular/core"
-import type { Todo } from "../../../../models/todo.model"
+import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core"
+import { TodosStore } from "../store/ngrx-todos.store"
 
 @Component({
 	selector: "ant-view-todo",
@@ -11,8 +11,10 @@ import type { Todo } from "../../../../models/todo.model"
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewTodoComponent {
-	todo = input<Todo>()
 	open = signal<boolean>(false)
+
+	readonly store = inject(TodosStore)
+	readonly selectedTodo = this.store.todoEntitySelected
 
 	closeModal() {
 		this.open.set(false)

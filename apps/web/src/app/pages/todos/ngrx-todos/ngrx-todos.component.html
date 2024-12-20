@@ -55,7 +55,6 @@
 	<mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50]" [length]="paginationLength()" showFirstLastButtons
 		aria-label="Select page of todos table" />
 </div>
-<div>{{selected()}}</div>
 
-<ant-view-todo [todo]="selectedTodo" />
-<ant-create-edit-todo [todo]="selectedTodo" />
+<ant-view-todo />
+<ant-create-edit-todo />
