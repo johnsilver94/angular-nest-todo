@@ -7,7 +7,7 @@
 		<div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
 			<!-- Modal header -->
 			<div class="flex justify-between items-center pb-4 mb-8 rounded-t border-b sm:mb-5 dark:border-gray-600">
-				<h3 class="text-2xl font-semibold text-gray-900 dark:text-white capitalize">{{ todo()?.title }}</h3>
+				<h3 class="text-2xl font-semibold text-gray-900 dark:text-white capitalize">{{ selectedTodo()?.title }}</h3>
 				<button
 					type="button"
 					class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -27,7 +27,7 @@
 				<div class="flex flex-col gap-1">
 					<label for="description" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Description</label>
 					<p id="description" class="block text-gray-900 text-base font-normal dark:text-gray-300 first-letter:capitalize">
-						{{ todo()?.description }}
+						{{ selectedTodo()?.description }}
 					</p>
 				</div>
 				<div class="grid grid-flow-col">
@@ -39,15 +39,15 @@
 						<div class="grid grid-cols-2 grid-flow-row">
 							<label for="description" class="block mb-2 text-base font-normal text-gray-600 dark:text-white">Created:</label>
 							<p id="description" class="block text-gray-900 text-base font-normal dark:text-gray-300 first-letter:capitalize">
-								{{ todo()?.createdAt | date: "mediumDate" }}
+								{{ selectedTodo()?.createdAt | date: "mediumDate" }}
 							</p>
 							<label for="description" class="block mb-2 text-base font-normal text-gray-600 dark:text-white">Updated:</label>
 							<p id="description" class="block text-gray-900 text-base font-normal dark:text-gray-300 first-letter:capitalize">
-								{{ todo()?.updatedAt | date: "mediumDate" }}
+								{{ selectedTodo()?.updatedAt | date: "mediumDate" }}
 							</p>
 							<label for="description" class="block mb-2 text-base font-normal text-gray-600 dark:text-white">Deadline:</label>
 							<p id="description" class="block text-gray-900 text-base font-normal dark:text-gray-300 first-letter:capitalize">
-								{{ todo()?.createdAt | date: "mediumDate" }}
+								{{ selectedTodo()?.createdAt | date: "mediumDate" }}
 							</p>
 						</div>
 					</div>

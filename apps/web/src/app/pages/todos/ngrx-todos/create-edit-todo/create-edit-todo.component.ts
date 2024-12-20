@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common"
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from "@angular/core"
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from "@angular/core"
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { Todo } from "../../../../models/todo.model"
 import { TodosStore } from "../store/ngrx-todos.store"
@@ -25,16 +25,16 @@ type TodoForm = {
 export class CreateEditTodoComponent {
 	readonly store = inject(TodosStore)
 
-	todo = input<Todo>()
 	open = signal<boolean>(false)
 	mode = signal<Mode>("edit")
 
+	readonly selectedTodo = this.store.todoEntitySelected
 	readonly isLoading = this.store.isLoading
 	readonly addTodo = this.store.addOne
 	readonly updateTodo = this.store.updateOne
 
 	todoForm: FormGroup<TodoForm> = new FormGroup({
-		title: new FormControl<string>("", { nonNullable: true, validators: [Validators.required] }),
+		title: new FormControl<string>("New Todo", { nonNullable: true, validators: [Validators.required] }),
 		team: new FormControl<string>("", { nonNullable: true, validators: [Validators.required] }),
 		status: new FormControl<string>("", { nonNullable: true, validators: [Validators.required] }),
 		priority: new FormControl<string>("", { nonNullable: true, validators: [Validators.required] }),
@@ -44,8 +44,7 @@ export class CreateEditTodoComponent {
 
 	constructor() {
 		effect(() => {
-			console.log("constructor - effect - todo", this.todo())
-			const todo = this.todo()
+			const todo = this.selectedTodo()
 			if (todo) {
 				this.todoForm.setValue({
 					title: todo.title,
@@ -64,7 +63,7 @@ export class CreateEditTodoComponent {
 	}
 
 	discardChanges() {
-		const todo = this.todo()
+		const todo = this.selectedTodo()
 		if (todo) {
 			this.todoForm.reset(
 				{
@@ -85,13 +84,11 @@ export class CreateEditTodoComponent {
 	}
 
 	createOrEditSubmit() {
-		const todo = this.todo()
+		const todo = this.selectedTodo()
 
-		if (!this.todoForm.valid || todo === undefined) {
+		if (!this.todoForm.valid || !todo) {
 			return
 		}
-
-		console.log("createOrEditSubmit:", this.todoForm.value)
 
 		const todoData = this.todoForm.value as Omit<Todo, "id">
 

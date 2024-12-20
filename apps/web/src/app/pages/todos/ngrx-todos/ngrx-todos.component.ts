@@ -57,15 +57,12 @@ export class NgrxTodosComponent implements AfterViewInit {
 	readonly getTodosPaginatedByQuery = this.store.getAllPaginated
 	readonly deleteTodo = this.store.deleteOne
 	readonly todoEntitySelect = this.store.todoEntitySelect
-	readonly todoEntitySelected = this.store.todoEntitySelected
 	readonly getOneTodo = this.store.getOne
 	readonly todoEntities = this.store.todoEntities
 
 	queryForm: FormGroup<FilterForm> = new FormGroup({
 		title: new FormControl("", { nonNullable: true })
 	})
-
-	selected = computed(() => JSON.stringify(this.todoEntitySelected()))
 
 	displayedColumns: { key: string; name: string }[] = [
 		{ key: "id", name: "ID" },
@@ -79,7 +76,6 @@ export class NgrxTodosComponent implements AfterViewInit {
 	columnsToDisplay = this.displayedColumns.map((column) => column.key)
 
 	isOpened = false
-	selectedTodo?: Todo
 
 	@ViewChild("paginator", { static: true })
 	paginator!: MatPaginator
@@ -89,15 +85,12 @@ export class NgrxTodosComponent implements AfterViewInit {
 	@ViewChild(CreateEditTodoComponent) createEditModal!: CreateEditTodoComponent
 
 	ngInit(): void {
-		console.log("🚀 ~ NgrxTodosComponent ~ ngInit ~ ngInit:")
 		this.getTodosPaginatedByQuery(this.query)
 	}
 
 	todosDatasource = computed(() => new MatTableDataSource(this.todoEntities()))
 
 	ngAfterViewInit(): void {
-		console.log("🚀 ~ NgrxTodosComponent ~ ngAfterViewInit ~ ngAfterViewInit:")
-
 		const { pageSize } = this.store.query()
 		this.paginator.pageSize = pageSize
 		this.todosDatasource().paginator = this.paginator
@@ -133,27 +126,17 @@ export class NgrxTodosComponent implements AfterViewInit {
 	}
 
 	viewTodo(todo: Todo) {
-		this.selectedTodo = todo
 		this.todoEntitySelect(todo.id)
 		this.viewModal.open.set(true)
 	}
 
 	editTodo(todo: Todo) {
-		this.selectedTodo = todo
+		this.todoEntitySelect(todo.id)
 		this.createEditModal.mode.set("edit")
 		this.createEditModal.open.set(true)
 	}
 
 	addTodo() {
-		this.getOneTodo({ id: 4 })
-		this.selectedTodo = {
-			id: -1,
-			title: "New Todo",
-			description: "",
-			completed: false,
-			createdAt: "",
-			updatedAt: ""
-		}
 		this.createEditModal.mode.set("create")
 		this.createEditModal.open.set(true)
 	}
