@@ -1,5 +1,14 @@
 import { CommonModule } from "@angular/common"
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, computed, inject } from "@angular/core"
+import {
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	Component,
+	Injector,
+	ViewChild,
+	computed,
+	inject,
+	signal
+} from "@angular/core"
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { MatButtonModule } from "@angular/material/button"
 import { MatFormFieldModule } from "@angular/material/form-field"
@@ -11,6 +20,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar"
 import { MatSelectModule } from "@angular/material/select"
 import { MatSort, MatSortModule } from "@angular/material/sort"
 import { MatTableDataSource, MatTableModule } from "@angular/material/table"
+import { watchState } from "@ngrx/signals"
 import { ROW_ANIMATION } from "../../../animations/row.animation"
 import { SortDirection } from "../../../models/pagination.model"
 import { Todo } from "../../../models/todo.model"
@@ -50,6 +60,7 @@ type FilterForm = {
 })
 export class NgrxTodosComponent implements AfterViewInit {
 	readonly store = inject(TodosStore)
+	readonly #injector = inject(Injector)
 
 	readonly isLoading = this.store.isLoading
 	readonly paginationLength = this.store.pagination.itemsCount
@@ -59,6 +70,8 @@ export class NgrxTodosComponent implements AfterViewInit {
 	readonly todoEntitySelect = this.store.todoEntitySelect
 	readonly getOneTodo = this.store.getOne
 	readonly todoEntities = this.store.todoEntities
+
+	someVariable = signal<string>("")
 
 	queryForm: FormGroup<FilterForm> = new FormGroup({
 		title: new FormControl("", { nonNullable: true })
@@ -91,6 +104,17 @@ export class NgrxTodosComponent implements AfterViewInit {
 	todosDatasource = computed(() => new MatTableDataSource(this.todoEntities()))
 
 	ngAfterViewInit(): void {
+		watchState(
+			this.store,
+			() => {
+				this.someVariable.set(this.store.requestStatus().toString())
+				console.log("🚀 ~ NgrxTodosComponent ~ watchState ~ this.store:requestStatus()", this.store.requestStatus())
+			},
+			{
+				injector: this.#injector
+			}
+		)
+
 		const { pageSize } = this.store.query()
 		this.paginator.pageSize = pageSize
 		this.todosDatasource().paginator = this.paginator

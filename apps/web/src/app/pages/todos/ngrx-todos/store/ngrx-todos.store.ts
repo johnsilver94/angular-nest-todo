@@ -8,7 +8,6 @@ import { QueryOptions, SortDirection } from "../../../../models/pagination.model
 import { Todo } from "../../../../models/todo.model"
 import { TodosService } from "../services/todos.service"
 import { BaseState, withEntityPaginatedCrud } from "./features/entity-paginated-crud.feature"
-import { withLogger } from "./features/logger.feature"
 import { withSelectedEntity } from "./features/selected-entity.feature"
 
 // type TodosState = BaseState<QueryOptions>
@@ -37,7 +36,7 @@ export const TodosStore = signalStore(
 	withEntities(todoConfig),
 	withEntityPaginatedCrud<Todo, QueryOptions>(todoConfig, TodosService),
 	withSelectedEntity<Todo, "todo">({ entity: todoConfig.entity, collection: todoConfig.collection }),
-	withLogger(),
+	// withLogger(),
 	withMethods((store, service = inject(TodosService)) => ({
 		updateQuery: (query: Partial<QueryOptions>) => {
 			patchState(store, (state) => ({ query: { ...state.query, ...query } }))
@@ -61,9 +60,11 @@ export const TodosStore = signalStore(
 	})),
 	withHooks({
 		onInit(store) {
-			console.log("Store initialized", store)
+			// console.log("Store initialized", store)
 			store.getAllPaginated(store.query)
 		},
-		onDestroy: (store) => console.log("Store destroyed", store)
+		onDestroy() {
+			// console.log("Store destroyed", store)
+		}
 	})
 )
