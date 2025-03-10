@@ -34,6 +34,9 @@ export class MockTodosStore {
 	toggleTodo = jest.fn()
 	todoEntitySelect = jest.fn()
 	deleteOne = jest.fn()
+	query = jest.fn()
+	updateQuery = jest.fn()
+	getAllPaginated = jest.fn().mockImplementation(() => this.todos)
 
 	requestStatus = signal<RequestStatus>("idle")
 	todoEntities = signal<Todo[]>(this.todos)
@@ -63,6 +66,53 @@ describe("NgrxTodosComponent", () => {
 
 	it("should display todos", () => {
 		expect(mockStore.todoEntities().length).toBeGreaterThan(0)
+	})
+
+	it("should update query sorting on sort change", () => {
+		const spyUpdateQuery = jest.spyOn(component, "updateQuery")
+
+		component.sort.sortChange.emit({
+			active: "title",
+			direction: "asc"
+		})
+
+		fixture.detectChanges()
+
+		expect(spyUpdateQuery).toHaveBeenCalledWith({ sortField: "title", sortDirection: "ASC" })
+
+		component.sort.sortChange.emit({
+			active: "title",
+			direction: "desc"
+		})
+
+		fixture.detectChanges()
+
+		expect(spyUpdateQuery).toHaveBeenCalledWith({ sortField: "title", sortDirection: "DESC" })
+	})
+
+	it("should update query pagination on paginator page change", () => {
+		const spyUpdateQuery = jest.spyOn(component, "updateQuery")
+
+		component.paginator.page.emit({
+			pageIndex: 0,
+			pageSize: 10,
+			length: 20
+		})
+
+		fixture.detectChanges()
+
+		expect(spyUpdateQuery).toHaveBeenCalledWith({ pageNumber: 1, pageSize: 10 })
+	})
+
+	it("should update query filters on queryForm value changes", () => {
+		const spyUpdateQuery = jest.spyOn(component, "updateQuery")
+
+		component.queryForm.setValue({ title: "Mock Todo" })
+		component.queryForm.updateValueAndValidity()
+
+		fixture.detectChanges()
+
+		expect(spyUpdateQuery).toHaveBeenCalledWith({ filterValue: "Mock Todo" })
 	})
 
 	it('should clear query filter on "Clear Filter"', () => {
@@ -96,10 +146,10 @@ describe("NgrxTodosComponent", () => {
 		const todo: Todo = mockStore.todos[0]
 
 		component.viewTodo(todo)
+		expect(spyEntitySelect).toHaveBeenCalledWith(todo.id)
 
 		fixture.detectChanges()
 
-		expect(spyEntitySelect).toHaveBeenCalledWith(todo.id)
 		expect(component.viewModal.open()).toBeTruthy()
 	})
 

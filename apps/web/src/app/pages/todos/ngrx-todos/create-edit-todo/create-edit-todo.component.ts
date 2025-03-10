@@ -1,11 +1,12 @@
 import { CommonModule } from "@angular/common"
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from "@angular/core"
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
+
 import { Todo } from "../../../../models/todo.model"
 import { TodosStore } from "../store/ngrx-todos.store"
 
 type Mode = "create" | "edit"
-type TodoForm = {
+export type TodoForm = {
 	title: FormControl<string>
 	team: FormControl<string>
 	status: FormControl<string>
@@ -43,19 +44,22 @@ export class CreateEditTodoComponent {
 	})
 
 	constructor() {
-		effect(() => {
-			const todo = this.selectedTodo()
-			if (todo) {
-				this.todoForm.setValue({
-					title: todo.title,
-					team: "",
-					status: "",
-					priority: "",
-					description: todo.description,
-					completed: todo.completed
-				})
-			}
-		})
+		effect(
+			() => {
+				const todo = this.selectedTodo()
+				if (todo) {
+					this.todoForm.setValue({
+						title: todo.title,
+						team: "",
+						status: "",
+						priority: "",
+						description: todo.description,
+						completed: todo.completed
+					})
+				}
+			},
+			{ allowSignalWrites: true }
+		)
 	}
 
 	closeModal() {
@@ -86,7 +90,11 @@ export class CreateEditTodoComponent {
 	createOrEditSubmit() {
 		const todo = this.selectedTodo()
 
-		if (!this.todoForm.valid || !todo) {
+		if (!this.todoForm.valid) {
+			return
+		}
+
+		if (this.mode() === "edit" && !todo) {
 			return
 		}
 
@@ -95,7 +103,8 @@ export class CreateEditTodoComponent {
 		if (this.mode() === "create") {
 			this.addTodo(todoData)
 		} else {
-			this.updateTodo({ id: todo.id, ...todoData })
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			this.updateTodo({ id: todo!.id, ...todoData })
 		}
 
 		this.closeModal()
