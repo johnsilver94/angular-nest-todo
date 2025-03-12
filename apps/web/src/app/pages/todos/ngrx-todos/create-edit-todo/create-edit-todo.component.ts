@@ -57,8 +57,7 @@ export class CreateEditTodoComponent {
 						completed: todo.completed
 					})
 				}
-			},
-			{ allowSignalWrites: true }
+			}
 		)
 	}
 
