@@ -15,7 +15,7 @@ export type SelectedEntityState = {
 	entitySelectedId: EntityId | null
 }
 
-export type SelectedEntityComputed<TEntity> = {
+export type SelectedEntityProps<TEntity> = {
 	entitySelected: Signal<TEntity | null>
 }
 
@@ -27,8 +27,8 @@ export type NamedSelectedEntityState<TCollection extends string> = {
 	[K in keyof SelectedEntityState as `${TCollection}${Capitalize<K>}`]: SelectedEntityState[K]
 }
 
-export type NamedSelectedEntityComputed<TEntity, TCollection extends string> = {
-	[K in keyof SelectedEntityComputed<TEntity> as `${TCollection}${Capitalize<K>}`]: SelectedEntityComputed<TEntity>[K]
+export type NamedSelectedEntityProps<TEntity, TCollection extends string> = {
+	[K in keyof SelectedEntityProps<TEntity> as `${TCollection}${Capitalize<K>}`]: SelectedEntityProps<TEntity>[K]
 }
 
 export type NamedSelectedEntityMethods<TCollection extends string> = {
@@ -65,7 +65,7 @@ export function withSelectedEntity<TEntity extends BaseEntity>(): SignalStoreFea
 	EmptyFeatureResult,
 	{
 		state: SelectedEntityState
-		computed: SelectedEntityComputed<TEntity>
+		props: SelectedEntityProps<TEntity>
 		methods: SelectedEntityMethods
 	}
 >
@@ -75,7 +75,7 @@ export function withSelectedEntity<TEntity extends BaseEntity>(config: {
 	EmptyFeatureResult,
 	{
 		state: SelectedEntityState
-		computed: SelectedEntityComputed<TEntity>
+		props: SelectedEntityProps<TEntity>
 		methods: SelectedEntityMethods
 	}
 >
@@ -86,7 +86,7 @@ export function withSelectedEntity<TEntity extends BaseEntity, TCollection exten
 	EmptyFeatureResult,
 	{
 		state: NamedSelectedEntityState<TCollection>
-		computed: NamedSelectedEntityComputed<TEntity, TCollection>
+		props: NamedSelectedEntityProps<TEntity, TCollection>
 		methods: NamedSelectedEntityMethods<TCollection>
 	}
 >

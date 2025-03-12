@@ -1,3 +1,5 @@
+/* eslint-disable @angular-eslint/no-output-rename */
+/* eslint-disable @angular-eslint/no-output-on-prefix */
 import { CommonModule } from "@angular/common"
 import { ChangeDetectionStrategy, Component, model, output } from "@angular/core"
 import { FormsModule } from "@angular/forms"
