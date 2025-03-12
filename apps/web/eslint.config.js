@@ -7,6 +7,7 @@ module.exports = [
 	...nx.configs["flat/angular-template"],
 	{
 		files: ["**/*.ts"],
+
 		rules: {
 			"@angular-eslint/directive-selector": [
 				"error",
@@ -25,10 +26,5 @@ module.exports = [
 				}
 			]
 		}
-	},
-	{
-		files: ["**/*.html"],
-		// Override or add rules here
-		rules: {}
 	}
 ]
